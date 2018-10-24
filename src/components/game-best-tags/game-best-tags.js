@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import NavBar from '../NavBar';
+import UploadPic from "./UploadPic";
+
 
 class GameBestTags extends Component {
 
   constructor() {
     super();
     this.state = {
-      gameActive: true
+      gameActive: false
     }
   }
 
@@ -15,7 +17,7 @@ class GameBestTags extends Component {
       console.log("1")
     }
     else {
-      console.log("2")
+      return <UploadPic />
     };
   }
 
