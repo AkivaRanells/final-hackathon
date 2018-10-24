@@ -6,10 +6,12 @@ class SocketPage extends React.Component {
         super(props);
 
         this.state = {
+            timer: 60,
             username: '',
             message: '',
             messages: []
         };
+
 
         this.socket = io('localhost:8080');
 
@@ -17,15 +19,14 @@ class SocketPage extends React.Component {
             this.addMessage(data);
         });
 
-        this.addMessage = () => {
-            console.log();
-            //send it to the server
-            this.socket.emit('chat message', {
-                message: this.state.message
-            })
-            this.setState({ messages: [...this.state.messages, {username:this.socket.id,message: this.state.message}] },function(){console.log(this.state.messages);});
-            
-        };
+        this.socket.on('timer',  (seconds) =>{
+            console.log(seconds);
+             this.setState({timer:seconds})
+        });
+
+
+
+
 
         // this.sendMessage = () => {
         //     console.log("sending")
@@ -35,6 +36,17 @@ class SocketPage extends React.Component {
         //     this.setState({ message: '' });
         // }
     }
+
+    addMessage = () => {
+        // console.log(this.socket.id);
+        //send it to the server
+        this.socket.emit('chat message', {
+            message: this.state.message
+        })
+        this.setState({ messages: [...this.state.messages, {username: this.socket.id, message: this.state.message}] },function(){console.log(this.state.messages);});
+        
+    };
+
     changeMessageInLocalState =(e)=>{
         // console.log(e.target.value)
         this.setState({message: e.target.value})
@@ -42,8 +54,9 @@ class SocketPage extends React.Component {
     render() {
         return (
             <div>
-
-                SocketPage
+                <p>SocketPage</p>
+                <div>{this.state.timer}</div>
+                
                 {this.state.messages.map(message => {
                     return (
                         <div>{message.username}: {message.message}</div>
