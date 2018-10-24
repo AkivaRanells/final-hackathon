@@ -18,9 +18,7 @@ mongoose.connect('mongodb://localhost/users', function () {
   console.log("DB connection established!!!");
 })
 
-const vision = new Clarifai.App({
-  apiKey: 'c8f592180ec346bbb16b5e92c8735dd6'
-});
+const vision = require ('./apikey.js')
 
 
 
