@@ -7,6 +7,7 @@ var mongoose = require('mongoose');
 let { User } = require('./models/user-model');
 const server = require('http').createServer(app);
 const Clarifai = require('clarifai');
+const io = socket(server);
 // var server = require('http').createServer(app);
 //urgent todo change port 8080 to heroku port
 
