@@ -11,27 +11,33 @@ class SocketPage extends React.Component {
             messages: []
         };
 
-        this.socket = io('localhost:80');
+        this.socket = io('localhost:8080');
 
-        this.socket.on('RECEIVE_MESSAGE', function (data) {
-            addMessage(data);
+        this.socket.on('chat message', function (data) {
+            this.addMessage(data);
         });
 
-        const addMessage = data => {
-            console.log(data);
-            this.setState({ messages: [...this.state.messages, data] });
-            console.log(this.state.messages);
-        };
-
-        this.sendMessage = ev => {
-            ev.preventDefault();
-            this.socket.emit('SEND_MESSAGE', {
-                author: this.state.username,
+        this.addMessage = () => {
+            console.log();
+            //send it to the server
+            this.socket.emit('chat message', {
                 message: this.state.message
             })
-            this.setState({ message: '' });
+            this.setState({ messages: [...this.state.messages, {username:this.socket.id,message: this.state.message}] },function(){console.log(this.state.messages);});
+            
+        };
 
-        }
+        // this.sendMessage = () => {
+        //     console.log("sending")
+        //     this.socket.emit('chat message', {
+        //         message: this.state.message
+        //     })
+        //     this.setState({ message: '' });
+        // }
+    }
+    changeMessageInLocalState =(e)=>{
+        // console.log(e.target.value)
+        this.setState({message: e.target.value})
     }
     render() {
         return (
@@ -40,9 +46,11 @@ class SocketPage extends React.Component {
                 SocketPage
                 {this.state.messages.map(message => {
                     return (
-                        <div>{message.author}: {message.message}</div>
+                        <div>{message.username}: {message.message}</div>
                     )
                 })}
+                <input type="text" value={this.state.name} onChange={this.changeMessageInLocalState}/>
+                <button onClick={this.addMessage}>Send</button>
             </div>
         );
     }

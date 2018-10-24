@@ -1,14 +1,15 @@
 const express = require('express');
+var socket = require('socket.io');
+const app = express();
 let bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-let {User} = require('./user-model');
+let {User} = require('./models/user-model');
+// var server = require('http').createServer(app);
 
 
 mongoose.connect('mongodb://localhost/users', function() {
   console.log("DB connection established!!!");
 })
-
-const app = express();
 
 app.use(express.static('public'));
 app.use(express.static('node_modules'));
@@ -52,6 +53,12 @@ app.post('/users', (req, res, err) => {
       });
     });
 
-app.listen(8080, function(){
-    console.log('running');
-})
+const server = app.listen(8080, function(){
+    console.log('server running on port 8080')
+});
+const io = socket(server)
+io.on('connection', function (socket) {
+    socket.on('chat message', function (msg) {
+        console.log(msg);
+    });
+});
