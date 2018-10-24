@@ -1,4 +1,5 @@
 const express = require('express');
+
 const socket = require('socket.io');
 const app = express();
 let bodyParser = require('body-parser');
@@ -8,7 +9,6 @@ const server = require('http').createServer(app);
 const Clarifai = require('clarifai');
 // var server = require('http').createServer(app);
 //urgent todo change port 8080 to heroku port
-
 
 
 
@@ -81,16 +81,14 @@ app.post('/users', (req, res, err) => {
     if (err) {
       console.log(err);
     }
-
     res.json(data);
   });
 });
 
 server.listen(8080, function () {
   console.log('server running on port 8080')
-
 });
-const io = socket(server)
+
 io.on('connection', function (socket) {
 
   let seconds = 60;

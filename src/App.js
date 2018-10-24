@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Redirect } from 'react-router';
 import './App.css';
 import '../node_modules/font-awesome/css/font-awesome.min.css';
-import NavBar from "./components/NavBar";
+import NavBar from "./components/navBar";
 import Homepage from './components/homepage/homepage';
 import GameBestTags from './components/game-best-tags/game-best-tags';
 import Login from './components/login';
@@ -20,6 +20,7 @@ class App extends Component {
   }
 
   componentDidMount = () => {
+    this.getImageTags("http://www.catster.com/wp-content/uploads/2017/08/A-fluffy-cat-looking-funny-surprised-or-concerned.jpg");
     this.getData();
   }
 
@@ -40,11 +41,11 @@ class App extends Component {
   getImageTags(str) {
     Axios.get('http://localhost:8080/image', {
       params: {
-        str:str
+        str:"http://www.catster.com/wp-content/uploads/2017/08/A-fluffy-cat-looking-funny-surprised-or-concerned.jpg"
       }
     })
     .then((response) => {
-      console.log(response.data.concepts);
+      return(response.data.concepts);
     })
     .catch(function (error) {
       console.log(error)
@@ -92,8 +93,6 @@ class App extends Component {
 
   logOut = () => {
    this.setState({userFound: false})
-   console.log(this.state)
-    //change state of user.userfound to false
   }
 
   render() {

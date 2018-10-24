@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import NavBar from '../NavBar'
+import NavBar from '../navBar'
 import '../../styles/homepage.css';
 import SocketPage from './SocketPage'
+
 
 
 class Homepage extends Component {

@@ -1,33 +1,15 @@
 import React, { Component } from 'react';
-import NavBar from '../NavBar';
+import NavBar from '../navBar';
+import UploadPic from "./UploadPic";
+
 
 class GameBestTags extends Component {
   constructor() {
     super();
     this.state = {
-      inputValue: ""
-    }
-  }
-
-getImageTags = () => {
-  if (this.state.inputValue !== "") {
-  this.props.getImageTags(this.state.inputValue);
-} else {
-  alert ("please pick a picture online!");
-}
-}
-
-
-changeInputValueInLocalState = (event) => {
-  let newState = {...this.state};
-  newState.inputValue = event.target.value;
-  this.setState(newState);
-}
-
-  constructor() {
-    super();
-    this.state = {
-      gameActive: true
+      inputValue: "",
+      gameActive: false,
+      imageTags: []
     }
   }
 
@@ -36,17 +18,32 @@ changeInputValueInLocalState = (event) => {
       console.log("1")
     }
     else {
-      console.log("2")
+      return <UploadPic inputValue={this.state.inputValue} changeInputValue={this.changeInputValueInLocalState} getImageTags={this.getImageTags}/>
     };
   }
 
+  getImageTags = () => {
+    console.log (this.state.inputValue)
+    if (this.state.inputValue !== "") {
+      let tags = this.props.getImageTags(this.state.inputValue)
+console.log(tags)      ;
+    } else {
+      alert("please pick a picture online!");
+    }
+  }
+
+
+  changeInputValueInLocalState = (event) => {
+    let newState = { ...this.state };
+    newState.inputValue = event.target.value;
+    this.setState(newState);
+  }
 
   render() {
     return (
       <div>
         <NavBar />
-        <input type="text" value={this.state.inputValue} onChange={this.changeInputValueInLocalState}/>
-        <button onClick={this.getImageTags}>Get Tags!</button> 
+
         <div className="game-container">
           {this.checkForActiveGame()}
 
