@@ -20,9 +20,9 @@ server.listen(80, function(){
 // })
 
 io.on('connection', function (socket) {
-    console.log(socket.id);
-    socket.emit('news', { hello: 'world' }, console.log('hello'));
-    socket.on('my other event', function (data) {
-        console.log(data);
+    // console.log(socket.id);
+    // socket.emit('news', { hello: 'world' }, console.log('hello'));
+    socket.on('chat message', function (msg) {
+        console.log(msg);
     });
 });
