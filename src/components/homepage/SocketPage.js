@@ -11,7 +11,7 @@ class SocketPage extends React.Component {
             messages: []
         };
 
-        this.socket = io('localhost:80');
+        this.socket = io('localhost:8080');
 
         this.socket.on('chat message', function (data) {
             this.addMessage(data);
@@ -23,8 +23,8 @@ class SocketPage extends React.Component {
             this.socket.emit('chat message', {
                 message: this.state.message
             })
-            this.setState({ messages: [...this.state.messages, this.state.message] });
-            console.log(this.state.messages);
+            this.setState({ messages: [...this.state.messages, {username:this.socket.id,message: this.state.message}] },function(){console.log(this.state.messages);});
+            
         };
 
         // this.sendMessage = () => {
@@ -46,7 +46,7 @@ class SocketPage extends React.Component {
                 SocketPage
                 {this.state.messages.map(message => {
                     return (
-                        <div>{message.author}: {message.message}</div>
+                        <div>{message.username}: {message.message}</div>
                     )
                 })}
                 <input type="text" value={this.state.name} onChange={this.changeMessageInLocalState}/>
