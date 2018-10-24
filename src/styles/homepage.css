@@ -1,12 +1,13 @@
 .button {
+    margin: 10px;
     display: inline-block;
     text-align: center;
     vertical-align: middle;
-    padding: 12px 24px;
+    padding: 12px 14px 12px 24px;
     border: 1px solid #488a74;
     border-radius: 8px;
-    background: #75e1bd;
     background: -webkit-gradient(linear, left top, left bottom, from(#75e1bd), to(#488a74));
+    background: #75e1bd;
     background: -moz-linear-gradient(top, #75e1bd, #488a74);
     background: linear-gradient(to bottom, #75e1bd, #488a74);
     text-shadow: #2d5749 1px 1px 1px;

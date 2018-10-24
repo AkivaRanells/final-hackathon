@@ -76,6 +76,12 @@ class App extends Component {
     }
   }
 
+  logOut = () => {
+   this.setState({userFound: false})
+   console.log(this.state)
+    //change state of user.userfound to false
+  }
+
   render() {
     return (
       <Router>
@@ -98,7 +104,7 @@ class App extends Component {
           />
           <Route path="/homepage" exact
             render={() =>
-              <Homepage />}
+              <Homepage logOut={this.logOut}/>}
           />
           <Route path="/game" exact
             render={() =>

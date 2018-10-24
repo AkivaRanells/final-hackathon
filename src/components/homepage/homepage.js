@@ -7,13 +7,18 @@ import SocketPage from './SocketPage'
 
 class Homepage extends Component {
 
+  logOut = () => {
+    console.log('homepage')
+    this.props.logOut()
+  }
+
   render() {
     return (
       <div>
-        <NavBar />
+        <NavBar logOut={this.logOut}/>
         <div className="homepage" >
-          <button type="button" className="button" render={<Link to="/game" activeClassName="selectedTab" />}>Host a new Game</button>
-          <button type="button" className="button" render={<Link to="/game" activeClassName="selectedTab" />}> Join an existing game!</button>
+          <input type="button" className="button" value="Host a new Game" render={<Link to="/game" activeClassName="selectedTab" />}></input>
+          <input type="button" className="button" value="Join an existing game!" render={<Link to="/newgame" activeClassName="selectedTab" />}/>
         </div>
         <SocketPage />
       </div>
