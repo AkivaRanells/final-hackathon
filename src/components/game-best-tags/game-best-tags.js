@@ -8,8 +8,8 @@ class GameBestTags extends Component {
     super();
     this.state = {
       inputValue: "",
-      gameActive: false
-
+      gameActive: false,
+      imageTags: []
     }
   }
 
@@ -25,7 +25,8 @@ class GameBestTags extends Component {
   getImageTags = () => {
     console.log (this.state.inputValue)
     if (this.state.inputValue !== "") {
-      this.props.getImageTags(this.state.inputValue);
+      let tags = this.props.getImageTags(this.state.inputValue)
+console.log(tags)      ;
     } else {
       alert("please pick a picture online!");
     }
@@ -37,9 +38,6 @@ class GameBestTags extends Component {
     newState.inputValue = event.target.value;
     this.setState(newState);
   }
-
-
-
 
   render() {
     return (
