@@ -5,7 +5,7 @@ let bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 let {User} = require('./models/user-model');
 // var server = require('http').createServer(app);
-
+//urgent todo change port 8080 to heroku port
 
 mongoose.connect('mongodb://localhost/users', function() {
   console.log("DB connection established!!!");
@@ -58,7 +58,20 @@ const server = app.listen(8080, function(){
 });
 const io = socket(server)
 io.on('connection', function (socket) {
+  let seconds = 60;
+
+  // to make things interesting, have it send every second
+  const interval = setInterval(function () {
+      seconds--;
+      socket.emit("timer", seconds);
+  }, 1000);
+
+  socket.on("disconnect", function () {
+      clearInterval(interval);
+  });
+  // console.log(socket.id)
     socket.on('chat message', function (msg) {
+      // socket.emit('chat message', msg);
         console.log(msg);
     });
 });
