@@ -1,17 +1,16 @@
 const express = require('express');
-var socket = require('socket.io');
+const socket = require('socket.io');
 const app = express();
 let bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-
+let { User } = require('./models/user-model');
+const server = require('http').createServer(app);
+const Clarifai = require('clarifai');
 // var server = require('http').createServer(app);
 //urgent todo change port 8080 to heroku port
 
 
-let { User } = require('./models/user-model');
-var server = require('http').createServer(app);
-var io = require('socket.io')(server);
-const Clarifai = require('clarifai');
+
 
 
 mongoose.connect('mongodb://localhost/users', function () {
