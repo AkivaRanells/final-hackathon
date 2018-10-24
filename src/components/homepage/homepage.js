@@ -15,11 +15,12 @@ class Homepage extends Component {
   render() {
     return (
       <div>
-        <NavBar logOut={this.logOut}/>
+        <NavBar logOut={this.logOut} />
         <div className="homepage" >
-          <input type="button" className="button" value="Host a new Game" render={<Link to="/game" activeClassName="selectedTab" />}></input>
-          <input type="button" className="button" value="Join an existing game!" render={<Link to="/newgame" activeClassName="selectedTab" />}/>
+          <Link to="/game" activeClassName="selectedTab" ><input type="button" className="button" value="Let's Play!" /></Link>
+          {/* <Link to="/game" activeClassName="selectedTab"><input type="button" className="button" value="Join an existing game!"/></Link>  */}
         </div>
+
         <SocketPage />
       </div>
     )
