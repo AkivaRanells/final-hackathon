@@ -1,4 +1,5 @@
 const mongoose = require ('mongoose');
+const Schema = mongoose.Schema;
 mongoose.connect('mongodb://localhost/users');
 
 let userSchema = new mongoose.Schema({
@@ -27,13 +28,16 @@ let gaia = new User({
     tags: ['cloud', 'cat', 'window']
 })
 
-akiva.save()
-alex.save()
-gaia.save()
+// akiva.save()
+// alex.save()
+// gaia.save()
 
-let query = User.find;
-User.find({}, function(err, user){
-    if(err)throw err;
-    console.log(user)
-})
-module.exports = User
+// let query = User.find;
+// User.find({}, function(err, user){
+//     if(err)throw err;
+//     console.log(user)
+// })
+// module.exports = User
+module.exports = {
+    User: User
+  }
