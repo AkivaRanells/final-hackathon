@@ -1,10 +1,11 @@
 const express = require('express');
+var socket = require('socket.io');
 const app = express();
 let bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 let {User} = require('./models/user-model');
-var server = require('http').createServer(app);
-var io = require('socket.io')(server);
+// var server = require('http').createServer(app);
+
 
 mongoose.connect('mongodb://localhost/users', function() {
   console.log("DB connection established!!!");
@@ -52,10 +53,10 @@ app.post('/users', (req, res, err) => {
       });
     });
 
-server.listen(8080, function(){
+const server = app.listen(8080, function(){
     console.log('server running on port 8080')
 });
-
+const io = socket(server)
 io.on('connection', function (socket) {
     socket.on('chat message', function (msg) {
         console.log(msg);
