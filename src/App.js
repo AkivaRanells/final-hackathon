@@ -37,6 +37,20 @@ class App extends Component {
       });
   }
 
+  getImageTags(str) {
+    Axios.get('http://localhost:8080/image', {
+      params: {
+        str:str
+      }
+    })
+    .then((response) => {
+      console.log(response.data.concepts);
+    })
+    .catch(function (error) {
+      console.log(error)
+    })
+  }
+
   checkDatabaseForNameEntered = (str) => {
     for (let i = 0; i < this.state.users.length; i++) {
       if (str === this.state.users[i].userName) {
@@ -108,7 +122,9 @@ class App extends Component {
           />
           <Route path="/game" exact
             render={() =>
-              <GameBestTags />}
+              <GameBestTags 
+              getImageTags={this.getImageTags}
+              />}
           />
         </div>
       </Router>
