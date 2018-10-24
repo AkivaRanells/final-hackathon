@@ -1,12 +1,56 @@
 import React, { Component } from 'react';
+import NavBar from '../navBar';
+import UploadPic from "./UploadPic";
+
 
 class GameBestTags extends Component {
+  constructor() {
+    super();
+    this.state = {
+      inputValue: "",
+      gameActive: false
+
+    }
+  }
+
+  checkForActiveGame = () => {
+    if (this.state.gameActive) {
+      console.log("1")
+    }
+    else {
+      return <UploadPic inputValue={this.state.inputValue} changeInputValue={this.changeInputValueInLocalState} getImageTags={this.getImageTags}/>
+    };
+  }
+
+  getImageTags = () => {
+    console.log (this.state.inputValue)
+    if (this.state.inputValue !== "") {
+      this.props.getImageTags(this.state.inputValue);
+    } else {
+      alert("please pick a picture online!");
+    }
+  }
+
+
+  changeInputValueInLocalState = (event) => {
+    let newState = { ...this.state };
+    newState.inputValue = event.target.value;
+    this.setState(newState);
+  }
+
+
+
 
   render() {
     return (
       <div>
-        game
-      </div> 
+        <NavBar />
+
+        <div className="game-container">
+          {this.checkForActiveGame()}
+
+        </div>
+      </div>
     )
   }
 
