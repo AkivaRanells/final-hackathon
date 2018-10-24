@@ -4,20 +4,18 @@ import { Link } from 'react-router-dom';
 
 class UploadPic extends Component {
 
-  
 
-  render() {
-    return (
-        <div>
-            <form id="upload-pic">
-            <input type="url" placeholder="Enter image link here"/>
-            </form>
-            <button type="submit" form="upload-pic" onclick={this.up}>Upload</button>
+
+    render() {
+        return (
+            <div>
+                <input type="text" value={this.props.inputValue} onChange={this.props.changeInputValue} placeholder="Img link goes here" />
+                <button onClick={this.props.getImageTags}>Get Tags!</button>
             </div>
-    )
-    
-    
-  }
+        )
+
+
+    }
 
 }
 
