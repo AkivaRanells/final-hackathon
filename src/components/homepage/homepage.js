@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import NavBar from '../navBar';
-
+import SocketPage from './SocketPage'
 class Homepage extends Component {
 
   render() {
@@ -8,6 +8,7 @@ class Homepage extends Component {
       <div>
         <NavBar />
         homepage
+        <SocketPage/>
       </div> 
     )
   }
