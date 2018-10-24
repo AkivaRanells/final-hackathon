@@ -20,7 +20,6 @@ class App extends Component {
   }
 
   componentDidMount = () => {
-    this.getImageTags("http://www.catster.com/wp-content/uploads/2017/08/A-fluffy-cat-looking-funny-surprised-or-concerned.jpg");
     this.getData();
   }
 
@@ -41,11 +40,11 @@ class App extends Component {
   getImageTags(str) {
     Axios.get('http://localhost:8080/image', {
       params: {
-        str:"http://www.catster.com/wp-content/uploads/2017/08/A-fluffy-cat-looking-funny-surprised-or-concerned.jpg"
+        str:str
       }
     })
     .then((response) => {
-      return(response.data.concepts);
+      console.log(response.data.concepts);
     })
     .catch(function (error) {
       console.log(error)

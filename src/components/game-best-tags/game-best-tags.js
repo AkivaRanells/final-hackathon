@@ -23,13 +23,11 @@ class GameBestTags extends Component {
   }
 
   getImageTags = () => {
-    console.log (this.state.inputValue)
     if (this.state.inputValue !== "") {
-      let tags = this.props.getImageTags(this.state.inputValue)
-console.log(tags)      ;
-    } else {
-      alert("please pick a picture online!");
-    }
+    this.props.getImageTags(this.state.inputValue);
+  } else {
+    alert ("please pick a picture online!");
+  }
   }
 
 
