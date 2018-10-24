@@ -1,11 +1,18 @@
 const express = require('express');
+
+const socket = require('socket.io');
 const app = express();
 let bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 let { User } = require('./models/user-model');
-var server = require('http').createServer(app);
-var io = require('socket.io')(server);
+const server = require('http').createServer(app);
 const Clarifai = require('clarifai');
+const io = socket(server);
+// var server = require('http').createServer(app);
+//urgent todo change port 8080 to heroku port
+
+
+
 
 mongoose.connect('mongodb://localhost/users', function () {
   console.log("DB connection established!!!");
@@ -82,6 +89,23 @@ server.listen(8080, function () {
 });
 
 io.on('connection', function (socket) {
+
+  let seconds = 60;
+
+  // to make things interesting, have it send every second
+  const interval = setInterval(function () {
+      seconds--;
+      socket.emit("timer", seconds);
+  }, 1000);
+
+  socket.on("disconnect", function () {
+      clearInterval(interval);
+  });
+  // console.log(socket.id)
+    socket.on('chat message', function (msg) {
+      // socket.emit('chat message', msg);
+        console.log(msg);
+    });
   socket.on('chat message', function (msg) {
     console.log(msg);
   });
