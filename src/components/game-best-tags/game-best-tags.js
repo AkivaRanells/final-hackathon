@@ -28,15 +28,19 @@ class GameBestTags extends Component {
     if (this.state.inputValue !== "") {
       this.props.getImageTags(this.state.inputValue)
         .then((response) => {
+          // this.setState({imageTags: })
           console.log(response.data.concepts);
         })
         .catch(function (error) {
           console.log(error)
-        });
+        })
     } else {
-      alert("please pick a picture online!");
-    }
-  }
+    
+    alert("please pick a picture online!");
+
+  }}
+
+
 
 
   changeInputValueInLocalState = (event) => {
