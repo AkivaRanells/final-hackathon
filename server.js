@@ -100,12 +100,20 @@ server.listen(8080, function () {
   console.log('server running on port 8080')
 });
 let userCounter = 0 ;
+let startTime = Date.now();
 io.on('connection', function (socket) {
   userCounter++;
+  console.log(userCounter);
   let timerStatus = true;
-
-  socket.emit("timer", timerStatus);
+  if(userCounter===1){
+    startTime = Date.now();
+    console.log(startTime);
+  }
+  console.log(startTime);
+  socket.emit("startTime", startTime);
   socket.emit("userCounter", userCounter);
+  socket.emit("timer", timerStatus);
+  
 
   // to make things interesting, have it send every second
   // const timeout = setTimeout(function () {
