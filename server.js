@@ -61,10 +61,10 @@ app.get('/users/:userName', (req, res, err) => {
 
 app.get('/image', (req, res, err) => {
   vision.models.predict(Clarifai.GENERAL_MODEL, req.query.str).then(
-    function(response) {
+    function (response) {
       res.send(response.outputs[0].data);
     },
-    function(err) {
+    function (err) {
       console.error(err);
     }
   )
@@ -99,26 +99,23 @@ app.post('/users', (req, res, err) => {
 server.listen(8080, function () {
   console.log('server running on port 8080')
 });
-
+let userCounter = 0 ;
 io.on('connection', function (socket) {
+  userCounter++;
+  let timerStatus = true;
 
-  let seconds = 60;
+  socket.emit("timer", timerStatus);
+  socket.emit("userCounter", userCounter);
 
   // to make things interesting, have it send every second
-  const interval = setInterval(function () {
-      seconds--;
-      socket.emit("timer", seconds);
-  }, 1000);
+  // const timeout = setTimeout(function () {
+  //   timerStatus = !timerStatus;
+  //   socket.emit("timer", timerStatus);
+  // }, 60000);
 
-  socket.on("disconnect", function () {
-      clearInterval(interval);
-  });
   // console.log(socket.id)
-    socket.on('chat message', function (msg) {
-      // socket.emit('chat message', msg);
-        console.log(msg);
-    });
   socket.on('chat message', function (msg) {
+    io.emit('chat message', msg);
     console.log(msg);
   });
 });
