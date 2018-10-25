@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import NavBar from '../navBar';
 import UploadPic from "./UploadPic";
 import SocketPage from './SocketPage';
-import AdminInstructions from './adminInstructions'
-import PlayerInstructions from './playerInstructions'
+import AdminInstructions from './adminInstructions';
+import PlayerInstructions from './playerInstructions';
+import Timer from './timer';
+import Images from './images';
 
 
 
@@ -13,7 +15,7 @@ class GameBestTags extends Component {
     this.state = {
       inputValue: "",
       gameActive: false,
-      imageTags: []
+      imageTags: ["demo", "tags", "that", "need", "to", "be", "deleted"]
     }
   }
 
@@ -46,13 +48,22 @@ class GameBestTags extends Component {
     if (this.state.imageTags !== "" || this.state.imageTags !== null) {
       return this.state.imageTags.slice(0, 15).map(tag =>
         <span> --{tag}-- </span>
+      )
+    }
+  }
+
+  displayImages = () => {
+    if (this.state.imageTags !== "" || this.state.imageTags !== null) {
+      return this.state.imageTags.slice(0, 15).map(tag =>
+        <span> --Image!-- </span>
 
       )
     }
-
   }
 
-
+  winningImage = () => {
+    return <p>Here's the winning pic!</p>
+  }
 
   changeInputValueInLocalState = (event) => {
     let newState = { ...this.state };
@@ -67,26 +78,55 @@ class GameBestTags extends Component {
   render() {
     let adminInstructions = null;
     let playerInstructions = null;
-        if (this.props.isAdminState && this.props.gamePhase === 0) {
-          adminInstructions = <AdminInstructions/>
-          playerInstructions = <PlayerInstructions/>
-        }
+    let uploadPic = null;
+    let timer = null;
+    let tags = null;
+    let images = null;
+    let winningImage = null;
+
+    if (this.props.isAdminState && this.props.gamePhase === 0) {
+      //admin phase 0
+      adminInstructions = <AdminInstructions />
+      uploadPic = <UploadPic inputValue={this.state.inputValue} changeInputValue={this.changeInputValueInLocalState} getImageTags={this.getImageTags} />
+     }
+
+    if (!this.props.isAdminState && this.props.gamePhase === 0) {
+      //player phase 0
+      playerInstructions = <PlayerInstructions />
+     }
+
+     if (this.props.isAdminState && this.props.gamePhase === 1) {
+       //admin phase 1
+      timer = <Timer/>
+      }
+
+      if (!this.props.isAdminState && this.props.gamePhase === 1) {
+        //player phase 1
+        tags = this.displayTags()
+        uploadPic = <UploadPic inputValue={this.state.inputValue} changeInputValue={this.changeInputValueInLocalState} getImageTags={this.getImageTags} />
+        timer = <Timer/>
+      }
+
+    if (this.props.gamePhase === 2) {
+      //phase 2
+      tags = this.displayTags()
+      images = this.displayImages()
+    }
+
+    if (this.props.gamePhase === 3) {
+      //phase 3 
+      winningImage = this.winningImage()
+    }
+
     return (
       <div>
-        {adminInstructions}    
-        {playerInstructions}    
-        {/* <NavBar /> */}
-
-        {/* <div className="game-container">
-          {this.checkForActiveGame()}
-          {this.displayTags()}
-          <SocketPage 
-          isAdmin={this.props.isAdmin}
-          />
- */}
-
-
-        {/* </div> */}
+        {adminInstructions}
+        {playerInstructions}
+        {uploadPic}
+        {timer}
+        {tags}
+        {images}
+        {winningImage}
       </div>
     )
   }

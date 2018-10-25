@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 
-class AdminInstructions extends Component {
+class Images extends Component {
 
   render() {
     return (
       <div>
-admin instructions!        
+Images!        
       </div>
     )
   }
@@ -13,4 +13,4 @@ admin instructions!
 }
 
 
-export default AdminInstructions;
+export default Images;

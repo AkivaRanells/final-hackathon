@@ -18,8 +18,8 @@ class App extends Component {
       currentUser: {},
       showError: false,
       redirectTo: null,
-      isAdmin: true,
-      gamePhase: 0
+      isAdmin: false,
+      gamePhase: 1
     }
   }
 
@@ -29,12 +29,12 @@ class App extends Component {
         str: str
       }
     })
-      .then((response) => {
-        console.log(response.data.concepts);
-      })
-      .catch(function (error) {
-        console.log(error)
-      })
+      // .then((response) => {
+      //   console.log(response.data.concepts);
+      // })
+      // .catch(function (error) {
+      //   console.log(error)
+      // })
   }
 
   checkDatabaseForNameEntered = async (str) => {
