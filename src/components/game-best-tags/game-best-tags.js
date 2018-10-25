@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import NavBar from '../navBar';
 import UploadPic from "./UploadPic";
-import SocketPage from './SocketPage'
+import SocketPage from './SocketPage';
+import AdminInstructions from './adminInstructions'
+import PlayerInstructions from './playerInstructions'
 
 
 
@@ -42,9 +44,9 @@ class GameBestTags extends Component {
 
   displayTags = () => {
     if (this.state.imageTags !== "" || this.state.imageTags !== null) {
-      return  this.state.imageTags.slice(0, 15).map( tag => 
-             <span> --{tag}-- </span>
-      
+      return this.state.imageTags.slice(0, 15).map(tag =>
+        <span> --{tag}-- </span>
+
       )
     }
 
@@ -63,20 +65,28 @@ class GameBestTags extends Component {
   }
 
   render() {
+    let adminInstructions = null;
+    let playerInstructions = null;
+        if (this.props.isAdminState && this.props.gamePhase === 0) {
+          adminInstructions = <AdminInstructions/>
+          playerInstructions = <PlayerInstructions/>
+        }
     return (
       <div>
-        <NavBar />
+        {adminInstructions}    
+        {playerInstructions}    
+        {/* <NavBar /> */}
 
-        <div className="game-container">
+        {/* <div className="game-container">
           {this.checkForActiveGame()}
           {this.displayTags()}
           <SocketPage 
           isAdmin={this.props.isAdmin}
           />
+ */}
 
 
-
-        </div>
+        {/* </div> */}
       </div>
     )
   }

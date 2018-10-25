@@ -18,7 +18,8 @@ class App extends Component {
       currentUser: {},
       showError: false,
       redirectTo: null,
-      isAdmin: false
+      isAdmin: true,
+      gamePhase: 0
     }
   }
 
@@ -138,6 +139,8 @@ class App extends Component {
               <GameBestTags
                 getImageTags={this.getImageTags}
                 isAdmin={this.isAdmin}
+                gamePhase={this.state.gamePhase}
+                isAdminState={this.state.isAdmin}
               />}
           />
         </div>
