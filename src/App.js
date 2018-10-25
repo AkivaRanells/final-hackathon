@@ -38,17 +38,13 @@ class App extends Component {
   }
 
   getImageTags(str) {
-    Axios.get('http://localhost:8080/image', {
+   return Axios.get('http://localhost:8080/image', {
       params: {
         str:str
       }
+      
     })
-    .then((response) => {
-      console.log(response.data.concepts);
-    })
-    .catch(function (error) {
-      console.log(error)
-    })
+    
   }
 
   checkDatabaseForNameEntered = (str) => {
