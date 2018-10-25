@@ -28,8 +28,9 @@ class GameBestTags extends Component {
     if (this.state.inputValue !== "") {
       this.props.getImageTags(this.state.inputValue)
         .then((response) => {
-          // this.setState({imageTags: })
-          console.log(response.data.concepts);
+          let tags = response.data.concepts.map(tag => tag.name)
+          this.setState({imageTags: tags})
+          console.log(this.state)
         })
         .catch(function (error) {
           console.log(error)
