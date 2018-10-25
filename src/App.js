@@ -18,8 +18,8 @@ class App extends Component {
       currentUser: {},
       showError: false,
       redirectTo: null,
-      isAdmin: true,
-      gamePhase: 0
+      isAdmin: false,
+      gamePhase: 1
     }
   }
 
