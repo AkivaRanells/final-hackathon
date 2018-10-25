@@ -17,12 +17,13 @@ class App extends Component {
       userFound: false,
       currentUser: {},
       showError: false,
-      redirectTo: null
+      redirectTo: null,
+      isAdmin: false
     }
   }
 
   getImageTags(str) {
-   return Axios.get('http://localhost:8080/image', {
+    return Axios.get('http://localhost:8080/image', {
       params: {
         str: str
       }
@@ -86,23 +87,31 @@ class App extends Component {
   }
 
 
-logOut = () => {
-  this.setState({ userFound: false })
-}
+  logOut = () => {
+    this.setState({ userFound: false })
+  }
 
-render() {
-  let to = this.state.userFound ? "/homepage" : "/login";
-  return (
-    <Router>
-      <div className="App">
-        <Route path="/" exact
-          render={() =>
-            <Redirect to={to} />} />
-        {/* <Route path="/" exact
+  isAdmin = (value) => {
+    if (value === 1) {
+      this.setState({
+        isAdmin: true
+      })
+    }
+  }
+
+  render() {
+    let to = this.state.userFound ? "/homepage" : "/login";
+    return (
+      <Router>
+        <div className="App">
+          <Route path="/" exact
+            render={() =>
+              <Redirect to={to} />} />
+          {/* <Route path="/" exact
             render={() =>
               <Redirect to="/login" />}
           /> */}
-        {/* <Route path="/" exact
+          {/* <Route path="/" exact
             render={() =>
               ((this.state.userFound) ? (
                 <Redirect to="/homepage" />
@@ -111,29 +120,30 @@ render() {
               )
             }
           /> */}
-        <Route path="/login" exact
-          render={() =>
-            <Login
-              showError={this.state.showError}
-              checkDatabaseForNameEntered={this.checkDatabaseForNameEntered}
-              addEnteredNameIntoDatabase={this.addEnteredNameIntoDatabase}
-              redirectTo={this.state.redirectTo}
-            />}
-        />
-        <Route path="/homepage" exact
-          render={() =>
-            <Homepage logOut={this.logOut} />}
-        />
-        <Route path="/game" exact
-          render={() =>
-            <GameBestTags
-              getImageTags={this.getImageTags}
-            />}
-        />
-      </div>
-    </Router>
-  );
-}
+          <Route path="/login" exact
+            render={() =>
+              <Login
+                showError={this.state.showError}
+                checkDatabaseForNameEntered={this.checkDatabaseForNameEntered}
+                addEnteredNameIntoDatabase={this.addEnteredNameIntoDatabase}
+                redirectTo={this.state.redirectTo}
+              />}
+          />
+          <Route path="/homepage" exact
+            render={() =>
+              <Homepage logOut={this.logOut} />}
+          />
+          <Route path="/game" exact
+            render={() =>
+              <GameBestTags
+                getImageTags={this.getImageTags}
+                isAdmin={this.isAdmin}
+              />}
+          />
+        </div>
+      </Router>
+    );
+  }
 }
 
 export default App;

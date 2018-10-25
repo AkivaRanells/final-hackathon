@@ -58,6 +58,10 @@ class GameBestTags extends Component {
     this.setState(newState);
   }
 
+  isAdmin = (value) => {
+    this.props.isAdmin(value)
+  }
+
   render() {
     return (
       <div>
@@ -66,7 +70,9 @@ class GameBestTags extends Component {
         <div className="game-container">
           {this.checkForActiveGame()}
           {this.displayTags()}
-          <SocketPage />
+          <SocketPage 
+          isAdmin={this.props.isAdmin}
+          />
 
 
 

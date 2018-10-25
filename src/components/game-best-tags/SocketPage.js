@@ -63,6 +63,10 @@ class SocketPage extends React.Component {
         
     };
 
+    isAdmin = (value) => {
+        this.props.isAdmin(value)
+    }
+
     changeMessageInLocalState =(e)=>{
         // console.log(e.target.value)
         this.setState({message: e.target.value})
