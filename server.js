@@ -87,7 +87,7 @@ app.post('/users', (req, res, err) => {
 server.listen(8080, function () {
   console.log('server running on port 8080')
 });
-let userCounter = 1 ;
+let userCounter = 0 ;
 io.on('connection', function (socket) {
   userCounter++;
   let timerStatus = true;
@@ -103,7 +103,7 @@ io.on('connection', function (socket) {
 
   // console.log(socket.id)
   socket.on('chat message', function (msg) {
-    // socket.emit('chat message', msg);
+    socket.emit('chat message', msg);
     console.log(msg);
   });
   socket.on('chat message', function (msg) {
