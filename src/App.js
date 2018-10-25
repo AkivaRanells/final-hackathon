@@ -54,8 +54,8 @@ class App extends Component {
         newState.userFound = true;
         this.setState(newState);
       }
+      if (!this.state.userFound) { return alert("I couldn't find you, try registering instead!") };
     }
-    if (!this.state.userFound) { alert("I couldn't find you, try registering instead!") };
   }
 
   addEnteredNameIntoDatabase = (str) => {
