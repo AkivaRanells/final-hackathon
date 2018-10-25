@@ -28,18 +28,27 @@ class GameBestTags extends Component {
     if (this.state.inputValue !== "") {
       this.props.getImageTags(this.state.inputValue)
         .then((response) => {
-          // this.setState({imageTags: })
-          console.log(response.data.concepts);
+          let tags = response.data.concepts.map(tag => tag.name)
+          this.setState({ imageTags: tags })
         })
         .catch(function (error) {
           console.log(error)
         })
     } else {
-    
-    alert("please pick a picture online!");
 
-  }}
+      alert("please pick a picture online!");
+    }
+  }
 
+  displayTags = () => {
+    if (this.state.imageTags !== "" || this.state.imageTags !== null) {
+      return  this.state.imageTags.slice(0, 15).map( tag => 
+             <span> --{tag}-- </span>
+      
+      )
+    }
+
+  }
 
 
 
@@ -56,7 +65,10 @@ class GameBestTags extends Component {
 
         <div className="game-container">
           {this.checkForActiveGame()}
-        <SocketPage />
+          {this.displayTags()}
+          <SocketPage />
+
+
 
         </div>
       </div>

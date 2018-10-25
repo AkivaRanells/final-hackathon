@@ -20,6 +20,7 @@ class SocketPage extends React.Component {
             this.addMessage(msg);
         });
 
+
         this.socket.on('timer',  (status) =>{
             console.log(status);
              this.setState({timer:seconds})
