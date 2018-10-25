@@ -47,6 +47,18 @@ app.get('/users', (req, res, err) => {
   });
 });
 
+app.get('/users/:userName', (req, res, err) => {
+  if (err) {
+    console.log(err);
+  }
+  User.find({"userName":req.params.userName}).exec(function (err, user) {
+    if (err) {
+      console.log(`couldn't return users: ${err}`);
+    }
+    res.send(user);
+  });
+});
+
 app.get('/image', (req, res, err) => {
   vision.models.predict(Clarifai.GENERAL_MODEL, req.query.str).then(
     function(response) {

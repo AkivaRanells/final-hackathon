@@ -15,90 +15,94 @@ class App extends Component {
     super();
     this.state = {
       userFound: false,
-      users: []
+      currentUser: {},
+      showError: false,
+      redirectTo: null
     }
-  }
-
-  componentDidMount = () => {
-    this.getData();
-  }
-
-  getData() {
-    Axios.get('http://localhost:8080/users')
-      .then((response) => {
-        console.log(response);
-        let newState = { ...this.state };
-        newState.users = response.data;
-        console.log(newState.users);
-        this.setState(newState);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
   }
 
   getImageTags(str) {
     Axios.get('http://localhost:8080/image', {
       params: {
-        str:str
+        str: str
       }
     })
-    .then((response) => {
-      console.log(response.data.concepts);
-    })
-    .catch(function (error) {
-      console.log(error)
-    })
+      .then((response) => {
+        console.log(response.data.concepts);
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
   }
 
-  checkDatabaseForNameEntered = (str) => {
-    for (let i = 0; i < this.state.users.length; i++) {
-      if (str === this.state.users[i].userName) {
-        let newState = { ...this.state };
-        newState.userFound = true;
-        this.setState(newState);
+  checkDatabaseForNameEntered = async (str) => {
+    if (str === "") {
+      alert("Please enter a name!")
+    } else {
+      let data = await Axios.get(`http://localhost:8080/users/${str}`)
+      if (data.data[0]) {
+        this.setState({
+          currentUser: data.data[0],
+          userFound: true,
+          redirectTo: "/homepage"
+        })
+      } else {
+        this.setState({
+          showError: true
+        })
       }
-      if (!this.state.userFound) { return alert("I couldn't find you, try registering instead!") };
+      console.log(this.state)
     }
   }
 
-  addEnteredNameIntoDatabase = (str) => {
-    let newUser = {
-      userName: str,
-      bestTagsTotalScoreHistory: 0,
-      tags: []
-    }
-    for (let i = 0; i < this.state.users.length; i++) {
-      if (str === this.state.users[i].userName) {
-        let newState = { ...this.state };
-        newState.userFound = true;
-        this.setState(newState);
+  addEnteredNameIntoDatabase = async (str) => {
+    let data = await Axios.get(`http://localhost:8080/users/${str}`)
+    if (data.data[0]) {
+      console.log(data.data[0])
+      this.setState({
+        currentUser: data.data[0],
+        userFound: true,
+        redirectTo: "/homepage"
+      })
+    } else {
+      let newUser = {
+        userName: str,
+        bestTagsTotalScoreHistory: 0,
+        tags: []
       }
-    }
-    if (!this.state.userFound) {
       Axios.post('http://localhost:8080/users', newUser)
         .then((data) => {
-          let newState = { ...this.state };
-          newState.userFound = true;
-          this.setState(newState);
+          console.log("added")
+          this.setState({
+            currentUser: newUser,
+            userFound: true,
+            redirectTo: "/homepage"
+          })
         })
         .catch((err) => {
           console.log(err)
         })
-    } else {
-      alert("You are already registered!");
     }
   }
 
-  logOut = () => {
-   this.setState({userFound: false})
-  }
 
-  render() {
-    return (
-      <Router>
-        <div className="App">
-          <Route path="/" exact
+logOut = () => {
+  this.setState({ userFound: false })
+}
+
+render() {
+  let to = this.state.userFound ? "/homepage" : "/login";
+  return (
+    <Router>
+      <div className="App">
+        <Route path="/" exact
+          render={() =>
+            <Redirect to={to} />} />
+        {/* <Route path="/" exact
+            render={() =>
+              <Redirect to="/login" />}
+          /> */}
+        {/* <Route path="/" exact
             render={() =>
               ((this.state.userFound) ? (
                 <Redirect to="/homepage" />
@@ -106,28 +110,30 @@ class App extends Component {
                 <Redirect to="/login" />
               )
             }
-          />
-          <Route path="/login" exact
-            render={() =>
-              <Login
-                checkDatabaseForNameEntered={this.checkDatabaseForNameEntered}
-                addEnteredNameIntoDatabase={this.addEnteredNameIntoDatabase}
-              />}
-          />
-          <Route path="/homepage" exact
-            render={() =>
-              <Homepage logOut={this.logOut}/>}
-          />
-          <Route path="/game" exact
-            render={() =>
-              <GameBestTags 
+          /> */}
+        <Route path="/login" exact
+          render={() =>
+            <Login
+              showError={this.state.showError}
+              checkDatabaseForNameEntered={this.checkDatabaseForNameEntered}
+              addEnteredNameIntoDatabase={this.addEnteredNameIntoDatabase}
+              redirectTo={this.state.redirectTo}
+            />}
+        />
+        <Route path="/homepage" exact
+          render={() =>
+            <Homepage logOut={this.logOut} />}
+        />
+        <Route path="/game" exact
+          render={() =>
+            <GameBestTags
               getImageTags={this.getImageTags}
-              />}
-          />
-        </div>
-      </Router>
-    );
-  }
+            />}
+        />
+      </div>
+    </Router>
+  );
+}
 }
 
 export default App;
