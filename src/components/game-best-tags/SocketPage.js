@@ -5,7 +5,7 @@ class SocketPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isAdmin: false,
+            startTimer: 0,
             timerStatus: false,
             seconds: 60,
             message: '',
@@ -14,32 +14,39 @@ class SocketPage extends React.Component {
 
         this.socket = io('localhost:8080');
 
-        this.socket.on('chat message', (msg)=> {
+        this.socket.on('chat message', (msg) => {
             this.addMessage(msg);
         });
 
 
         this.socket.on("userCounter", (userCounter) => {
-            if(userCounter===1){
-                this.setState({isAdmin:true})
-            }
+            this.isAdmin(userCounter);
+            this.setState({ isAdmin: true })
         })
 
+        this.socket.on("startTime", (startTime) => {
+            console.log(startTime);
+            this.setState({ startTimer: startTime })
+        })
 
         this.socket.on('timer', (timerStatus) => {
             console.log(timerStatus);
+            if (this.state.isAdmin) { }
             this.setState({ timerStatus: timerStatus });
             this.timerFunction();
         });
- 
+
     }
 
     timerFunction = () => {
-        let secondsForCountdown = 60;
+        let secondsForCountdown = this.state.startTimer + 60000;
         const interval = setInterval(() => {
-            secondsForCountdown--;
-            if(secondsForCountdown===0){return this.setState({timerStatus:false})}
-            this.setState({ seconds: secondsForCountdown })
+            secondsForCountdown -= 1000;
+            if (secondsForCountdown === this.state.startTimer) {
+                return this.setState({ timerStatus: false })
+            } else {
+                this.setState({ seconds: secondsForCountdown })
+            }
         }, 1000)
 
     }
@@ -59,17 +66,17 @@ class SocketPage extends React.Component {
         // this.socket.emit('chat message', {
         //     message: this.state.message
         // })
-        this.setState({ messages: [...this.state.messages, {username: msg.username, message: msg.message }] },function(){console.log(this.state.messages);});
-        
+        this.setState({ messages: [...this.state.messages, { username: msg.username, message: msg.message }] }, function () { console.log(this.state.messages); });
+
     };
 
     isAdmin = (value) => {
         this.props.isAdmin(value)
     }
 
-    changeMessageInLocalState =(e)=>{
+    changeMessageInLocalState = (e) => {
         // console.log(e.target.value)
-        this.setState({message: e.target.value})
+        this.setState({ message: e.target.value })
     }
     render() {
         return (
@@ -81,7 +88,7 @@ class SocketPage extends React.Component {
                         <div>{message.username} : {message.message}</div>
                     )
                 })}
-                <input type="text" value={this.state.name} onChange={this.changeMessageInLocalState}/>
+                <input type="text" value={this.state.name} onChange={this.changeMessageInLocalState} />
                 <button onClick={this.sendMessage}>Send</button>
             </div>
         );
