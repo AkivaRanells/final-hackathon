@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import NavBar from '../navBar'
 import '../../styles/homepage.css';
-import SocketPage from './SocketPage'
 
 
 
@@ -22,7 +21,6 @@ class Homepage extends Component {
           {/* <Link to="/game" activeClassName="selectedTab"><input type="button" className="button" value="Join an existing game!"/></Link>  */}
         </div>
 
-        <SocketPage />
       </div>
     )
   }

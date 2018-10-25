@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import NavBar from '../navBar';
 import UploadPic from "./UploadPic";
+import SocketPage from './SocketPage'
+
 
 
 class GameBestTags extends Component {
@@ -18,16 +20,22 @@ class GameBestTags extends Component {
       console.log("1")
     }
     else {
-      return <UploadPic inputValue={this.state.inputValue} changeInputValue={this.changeInputValueInLocalState} getImageTags={this.getImageTags}/>
+      return <UploadPic inputValue={this.state.inputValue} changeInputValue={this.changeInputValueInLocalState} getImageTags={this.getImageTags} />
     };
   }
 
   getImageTags = () => {
     if (this.state.inputValue !== "") {
-    this.props.getImageTags(this.state.inputValue);
-  } else {
-    alert ("please pick a picture online!");
-  }
+      this.props.getImageTags(this.state.inputValue)
+        .then((response) => {
+          console.log(response.data.concepts);
+        })
+        .catch(function (error) {
+          console.log(error)
+        });
+    } else {
+      alert("please pick a picture online!");
+    }
   }
 
 
@@ -44,6 +52,7 @@ class GameBestTags extends Component {
 
         <div className="game-container">
           {this.checkForActiveGame()}
+        <SocketPage />
 
         </div>
       </div>
