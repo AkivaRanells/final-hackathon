@@ -18,11 +18,13 @@ class SocketPage extends React.Component {
             this.addMessage(msg);
         });
 
+
         this.socket.on("userCounter", (userCounter) => {
             if(userCounter===1){
                 this.setState({isAdmin:true})
             }
         })
+
 
         this.socket.on('timer', (timerStatus) => {
             console.log(timerStatus);
