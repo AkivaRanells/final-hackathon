@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 
 class Login extends Component {
 
@@ -29,11 +29,18 @@ class Login extends Component {
   }
 
   render() {
+    if(this.props.redirectTo) {
+      return <Redirect to={this.props.redirectTo} />
+    } 
     return (
       <div>
         <input type="text" value={this.state.name} onChange={this.changeNameInLocalState}/>
         <Link to="/"><button onClick={this.checkDatabaseForNameEntered}>Login</button></Link>
         <Link to="/"><button onClick={this.addEnteredNameIntoDatabase}>Register</button></Link>
+        { this.props.showError
+        ? <p>USER NOT FOUND!</p>
+        : <p></p>
+      } 
       </div> 
     )
   }
