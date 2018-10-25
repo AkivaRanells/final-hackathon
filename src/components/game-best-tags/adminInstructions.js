@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import '../../styles/instructions.css'
 
 class AdminInstructions extends Component {
 

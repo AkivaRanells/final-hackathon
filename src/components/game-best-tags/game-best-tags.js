@@ -14,7 +14,7 @@ class GameBestTags extends Component {
     super();
     this.state = {
       inputValue: "",
-      gameActive: false,
+      gameActive: true,
       imageTags: ["demo", "tags", "that", "need", "to", "be", "deleted"]
     }
   }

@@ -19,7 +19,7 @@ class App extends Component {
       showError: false,
       redirectTo: null,
       isAdmin: false,
-      gamePhase: 1
+      gamePhase: 0
     }
   }
 

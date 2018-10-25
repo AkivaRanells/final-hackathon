@@ -5,7 +5,7 @@ class Images extends Component {
   render() {
     return (
       <div>
-Images!        
+        Click on your favorite!
       </div>
     )
   }
