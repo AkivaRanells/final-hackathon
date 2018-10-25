@@ -29,12 +29,12 @@ class App extends Component {
         str: str
       }
     })
-      .then((response) => {
-        console.log(response.data.concepts);
-      })
-      .catch(function (error) {
-        console.log(error)
-      })
+      // .then((response) => {
+      //   console.log(response.data.concepts);
+      // })
+      // .catch(function (error) {
+      //   console.log(error)
+      // })
   }
 
   checkDatabaseForNameEntered = async (str) => {
