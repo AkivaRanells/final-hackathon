@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import NavBar from '../navBar';
 import UploadPic from "./UploadPic";
+import SocketPage from './SocketPage'
+
 
 
 class GameBestTags extends Component {
@@ -54,6 +56,7 @@ class GameBestTags extends Component {
 
         <div className="game-container">
           {this.checkForActiveGame()}
+        <SocketPage />
 
         </div>
       </div>

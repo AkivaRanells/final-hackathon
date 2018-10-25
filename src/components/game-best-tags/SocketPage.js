@@ -6,9 +6,7 @@ class SocketPage extends React.Component {
         super(props);
 
         this.state = {
-            isAdmin: false,
-            timerStatus: false,
-            seconds: 60,
+            timer: 60,
             username: '',
             message: '',
             messages: []
@@ -21,16 +19,9 @@ class SocketPage extends React.Component {
             this.addMessage(data);
         });
 
-        this.socket.on("userCounter", (userCounter) => {
-            if(userCounter===1){
-                this.setState({isAdmin:true})
-            }
-        })
-
-        this.socket.on('timer', (timerStatus) => {
-            console.log(timerStatus);
-            this.setState({ timerStatus: timerStatus });
-            this.timerFunction();
+        this.socket.on('timer',  (seconds) =>{
+            console.log(seconds);
+             this.setState({timer:seconds})
         });
 
 
@@ -52,36 +43,26 @@ class SocketPage extends React.Component {
         this.socket.emit('chat message', {
             message: this.state.message
         })
-        this.setState({ messages: [...this.state.messages, { username: this.socket.id, message: this.state.message }] }, function () { console.log(this.state.messages); });
-
+        this.setState({ messages: [...this.state.messages, {username: this.socket.id, message: this.state.message}] },function(){console.log(this.state.messages);});
+        
     };
 
-    timerFunction = () => {
-        let secondsForCountdown = 60;
-        const interval = setInterval(() => {
-            secondsForCountdown--;
-            if(secondsForCountdown===0){return this.setState({timerStatus:false})}
-            this.setState({ seconds: secondsForCountdown })
-        }, 1000)
-
-    }
-
-    changeMessageInLocalState = (e) => {
+    changeMessageInLocalState =(e)=>{
         // console.log(e.target.value)
-        this.setState({ message: e.target.value })
+        this.setState({message: e.target.value})
     }
     render() {
         return (
             <div>
                 <p>SocketPage</p>
-                <div>{this.state.timerStatus ? <p>{this.state.seconds}</p> : <p>Out of Time</p>}</div>
-
+                <div>{this.state.timer}</div>
+                
                 {this.state.messages.map(message => {
                     return (
                         <div>{message.username}: {message.message}</div>
                     )
                 })}
-                <input type="text" value={this.state.name} onChange={this.changeMessageInLocalState} />
+                <input type="text" value={this.state.name} onChange={this.changeMessageInLocalState}/>
                 <button onClick={this.addMessage}>Send</button>
             </div>
         );
