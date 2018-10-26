@@ -127,6 +127,7 @@ class GameBestTags extends Component {
         {tags}
         {images}
         {winningImage}
+        <SocketPage isAdmin={this.props.isAdmin}/>
       </div>
     )
   }
