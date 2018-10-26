@@ -5,6 +5,7 @@ class SocketPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            firstTime: false,
             isAdmin: false,
             startTimer: 0,
             timerStatus: false,
@@ -22,32 +23,49 @@ class SocketPage extends React.Component {
         this.socket.on("userCounter", (userCounter) => {
             this.isAdmin(userCounter);
             if (userCounter === 1) {
-                this.setState({ isAdmin: true });
-                
+                this.setState({ isAdmin: true, firstTime: true });
             }
         })
 
-        this.socket.on("startTime", (startTime) => {
-            // console.log(startTime);
-            this.setState({ startTimer: startTime })
+        this.socket.on("gameBegan", (time) => {
+            // console.log('game has begun');
+            this.setState({ startTimer: time.startTime, timerStatus: true, firstTime: false },
+                function () { this.timerFunction() })
         })
 
-        this.socket.on('timer', (timerStatus) => {
-            // console.log(timerStatus);
-            this.setState({ timerStatus: timerStatus });
-            this.timerFunction();
+        this.socket.on('timer', (timer) => {
+
+            if (!this.state.isAdmin) {
+
+                this.setState({ timerStatus: timer.timerStatus, startTimer: timer.startTime, firstTime: false },
+                    function () {
+                        // console.log('timer function called',this.state.timerStatus ,this.state.startTimer, timer.startTime );
+                        this.timerFunction();
+                    });
+            }
         });
 
     }
 
+    componentDidUpdate = () => {
+        // console.log('componentdidupdate');
+        if (this.state.isAdmin && this.props.gameBegan && this.state.firstTime) {
+            this.socket.emit('gameBegan', { startTime: Date.now() })
+        }
+    }
+
     timerFunction = () => {
-        let secondsForCountdown = this.state.startTimer+60000-Date.now();
+        let secondsForCountdown = Math.round((this.state.startTimer + 60000 - Date.now()) / 1000);
+
         // console.log(secondsForCountdown,this.state.startTimer)
         const interval = setInterval(() => {
-            secondsForCountdown = secondsForCountdown - 1000;
+            secondsForCountdown = secondsForCountdown - 1;
             // console.log(secondsForCountdown,this.state.startTimer)
-            if (secondsForCountdown > this.state.startTimer) {
-                return this.setState({ timerStatus: false })
+            if (secondsForCountdown <= 0) {
+                // console.log('conditionWorking')
+                this.setState({ timerStatus: false })
+                this.props.changeGamePhase(2);
+                clearInterval(interval);
             } else {
                 this.setState({ seconds: secondsForCountdown })
             }

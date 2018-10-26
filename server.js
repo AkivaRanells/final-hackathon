@@ -105,22 +105,13 @@ io.on('connection', function (socket) {
   userCounter++;
   // console.log(userCounter);
   let timerStatus = true;
-  if(userCounter===1){
-    startTime = Date.now();
-    // console.log(startTime);
-  }
-  // console.log(startTime);
-  socket.emit("startTime", startTime);
+  let timer = {timerStatus:timerStatus, startTime:startTime};
   socket.emit("userCounter", userCounter);
-  socket.emit("timer", timerStatus);
-  
-
-  // to make things interesting, have it send every second
-  // const timeout = setTimeout(function () {
-  //   timerStatus = !timerStatus;
-  //   socket.emit("timer", timerStatus);
-  // }, 60000);
-
+  socket.emit("timer", timer );
+  socket.on('gameBegan', function(time){
+    startTime=time.startTime
+    io.emit('gameBegan', time);
+  })
   // console.log(socket.id)
   socket.on('chat message', function (msg) {
     io.emit('chat message', msg);

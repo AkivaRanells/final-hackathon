@@ -13,6 +13,7 @@ class GameBestTags extends Component {
   constructor() {
     super();
     this.state = {
+      gameBegan: false,
       inputValue: "",
       gameActive: true,
       imageTags: ["demo", "tags", "that", "need", "to", "be", "deleted"]
@@ -27,8 +28,12 @@ class GameBestTags extends Component {
       return <UploadPic inputValue={this.state.inputValue} changeInputValue={this.changeInputValueInLocalState} getImageTags={this.getImageTags} />
     };
   }
-
+  startTimerInSocket=()=>{
+    this.setState({gameBegan:true, startTime:Date.now()})
+  }
   getImageTags = () => {
+    this.startTimerInSocket();
+    this.props.changeGamePhase(1);
     if (this.state.inputValue !== "") {
       this.props.getImageTags(this.state.inputValue)
         .then((response) => {
@@ -127,7 +132,10 @@ class GameBestTags extends Component {
         {tags}
         {images}
         {winningImage}
-        <SocketPage isAdmin={this.props.isAdmin}/>
+        <SocketPage isAdmin={this.props.isAdmin} 
+        changeGamePhase={this.props.changeGamePhase}
+        gameBegan={this.state.gameBegan}
+        />
       </div>
     )
   }

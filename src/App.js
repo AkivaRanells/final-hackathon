@@ -100,6 +100,9 @@ class App extends Component {
     }
   }
 
+  changeGamePhase=(num)=>{
+    this.setState({gamePhase:num})
+  }  
   render() {
     let to = this.state.userFound ? "/homepage" : "/login";
     return (
@@ -141,6 +144,7 @@ class App extends Component {
                 isAdmin={this.isAdmin}
                 gamePhase={this.state.gamePhase}
                 isAdminState={this.state.isAdmin}
+                changeGamePhase={this.changeGamePhase}
               />}
           />
         </div>
