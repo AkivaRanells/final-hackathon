@@ -87,7 +87,7 @@ class App extends Component {
     }
   }
 
-
+  
   logOut = () => {
     this.setState({ userFound: false })
   }
