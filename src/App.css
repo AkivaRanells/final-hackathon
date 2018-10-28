@@ -16,7 +16,7 @@
 {width:1%;
  background-image:url(./styles/wrapper-bg.jpg);
  background-repeat:no-repeat;
- height:216px;
+ height:316px;
  float:left;
  margin:0 auto;
 
@@ -26,7 +26,7 @@
 {
  width:98%;
  background-image: url(./styles/wrapper-bg-mid.jpg);
- height:216px;
+ height:316px;
  float:left;
  background-repeat:repeat-x;
  margin:0 auto;
@@ -36,7 +36,7 @@
 {width:1%;
  background-image: url(./styles/wrapper-bg-right.jpg);
  background-repeat:no-repeat;
- height:216px;
+ height:316px;
  float:right;
  margin:0 auto;
 }
