@@ -17,15 +17,15 @@ class GameBestTags extends Component {
       gameBegan: false,
       inputValue: "",
       gameActive: true,
-      imageTags: ["demo", "tags", "that", "need", "to", "be", "deleted"],
-      imageURLs: ['https://thumbs.dreamstime.com/z/cat-dog-party-hat-white-background-17900775.jpg','http://v892w2ylk4g429cyct840kvh-wpengine.netdna-ssl.com/wp-content/uploads/2012/05/AdobeStock_50013661-2.jpeg', 'https://i.ytimg.com/vi/EeIgc-5-JkY/maxresdefault.jpg', 'https://www.petmd.com/sites/default/files/introduce-dog-to-cat.jpg' ]
-
+      imageTags: null,
+      imageURLs: [],
+      haveSentURL: false
     }
   }
 
   checkForActiveGame = () => {
     if (this.state.gameActive) {
-      console.log("1")
+      // console.log("1")
     }
     else {
       return <UploadPic inputValue={this.state.inputValue} changeInputValue={this.changeInputValueInLocalState} getImageTags={this.getImageTags} />
@@ -37,35 +37,44 @@ class GameBestTags extends Component {
 
   getImageTags = () => {
     if (this.state.inputValue !== "") {
-      this.props.getImageTags(this.state.inputValue)
-        .then((response) => {
-          let tags = response.data.concepts.map(tag => tag.name)
-          console.log('Got tags')
-          this.setState({ imageTags: tags })
-          this.startTimerInSocket();
-          this.props.changeGamePhase(1);
-        })
-        .catch(function (error) {
-          console.log(error)
-        })
-    } else {
-      alert("please pick a picture online!");
+      // this.changeImageURLSInState(this.state.inputValue)
+      if (this.props.isAdminState) {
+        this.props.getImageTags(this.state.inputValue)
+          .then((response) => {
+            let tags = response.data.concepts.map(tag => tag.name)
+            console.log('Got tags')
+            this.setState({ imageTags: tags })
+            this.startTimerInSocket();
+            this.props.changeGamePhase(1);
+          })
+          .catch(function (error) {
+            console.log(error)
+          })
+      }
     }
   }
 
   displayTags = () => {
-    if (this.state.imageTags !== "" || this.state.imageTags !== null) {
-      return this.state.imageTags.slice(0, 15).map(tag =>
-        <div className="tags"> {tag} <div className="tags"> /</div></div>
+    if (this.state.imageTags) {
+      return this.state.imageTags.map(tag => {
+        return (
+          <div className="tags">
+            --{tag}-- <div className="tags">
+            </div>
+          </div>)
+      }
       )
     }
+    // .slice(0, 15)
   }
 
   displayImages = () => {
-    if (this.state.imageTags !== "" || this.state.imageTags !== null) {
-      return this.state.imageURLs.slice(0, 15).map(image =>
-        <span><img src={image} className="gameImage"></img> </span>
-      )
+    if (this.state.imageTags) {
+      return this.state.imageURLs.map(image => {
+        return (
+          <span><img src={image} className="gameImage"></img> </span>
+        )
+      })
     }
   }
 
@@ -84,11 +93,23 @@ class GameBestTags extends Component {
   }
 
   changeTagsInState = (tags) => {
-    // console.log(tags)
     this.setState({
       imageTags: tags
     })
   }
+
+  changeImageURLSInState = (urlArray) => {
+    if(!this.state.haveSentURL) {
+    this.setState({imageURLs:urlArray, haveSentURL:true}, function(){
+      console.log(this.state.imageURLs)
+    }
+    )
+  }
+  }
+
+  // componentDidUpdate() {
+  //   this.displayTags()
+  // }
 
   render() {
     let adminInstructions = null;
@@ -140,11 +161,11 @@ class GameBestTags extends Component {
         {playerInstructions}
         {uploadPic}
         <div className="gameBox">{timer}
-        {tags}
-        <div>
-        {images}
-        </div>
-        {winningImage}
+          {tags}
+          <div>
+            {images}
+          </div>
+          {winningImage}
 
         </div>
         <SocketPage isAdmin={this.props.isAdmin}
@@ -152,6 +173,9 @@ class GameBestTags extends Component {
           gameBegan={this.state.gameBegan}
           tags={this.state.imageTags}
           changeTagsInState={this.changeTagsInState}
+          changeImageURLSInState={this.changeImageURLSInState}
+          imageURL={this.state.inputValue}
+          urlArray={this.state.imageURLs}
         />
       </div>
     )

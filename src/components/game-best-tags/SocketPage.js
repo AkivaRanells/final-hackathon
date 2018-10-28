@@ -5,6 +5,7 @@ class SocketPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            tagsEmit: false,
             firstTimeEmit: false,
             firstTime: false,
             isAdmin: false,
@@ -12,7 +13,6 @@ class SocketPage extends React.Component {
             timerStatus: false,
             message: '',
             messages: [],
-            tagsRendered: false
         };
 
         this.socket = io('localhost:8080');
@@ -22,12 +22,19 @@ class SocketPage extends React.Component {
         });
 
         this.socket.on('sendTags', (tags) => {
-            // console.log(tags.tags)
-            // this.setState({
-            //     tagsRendered: true
-            // })
-            this.props.changeTagsInState(tags.tags)
+            if (!this.state.tagsEmit) {
+                // console.log(tags.tags)
+                this.props.changeTagsInState(tags.tags)
+                // console.log(this.props.changeTagsInState(tags.tags))
+                this.setState({ tagsEmit: true })
+                this.props.changeGamePhase(1);
+            }
         });
+
+        this.socket.on("sendURL", (urlArray)=> {
+            this.props.changeImageURLSInState(urlArray)
+            console.log(urlArray)
+        })
 
         this.socket.on("userCounter", (userCounter) => {
             this.isAdmin(userCounter);
@@ -37,13 +44,13 @@ class SocketPage extends React.Component {
         })
 
         this.socket.on("gameBegan", (time) => {
-           if(!this.state.firstTimeEmit){
-            this.setState({ firstTimeEmit: true })
+            if (!this.state.firstTimeEmit) {
+                this.setState({ firstTimeEmit: true })
 
-            console.log('game has begun'+time.startTime+"timerStatus"+ time.timerStatus);
-            this.setState({ startTimer: time.startTime, timerStatus: time.timerStatus },
-                function () { this.timerFunction() })
-           }
+                // console.log('game has begun' + time.startTime + "timerStatus" + time.timerStatus);
+                this.setState({ startTimer: time.startTime, timerStatus: time.timerStatus },
+                    function () { this.timerFunction() })
+            }
         })
 
         // this.socket.on('timer', (timer) => {
@@ -62,28 +69,30 @@ class SocketPage extends React.Component {
 
     componentDidUpdate = () => {
         // console.log('componentdidupdate');
-        console.log(this.state.isAdmin)
+        // console.log(this.state.isAdmin)
         if (this.state.isAdmin && this.props.gameBegan && this.state.firstTime) {
-            console.log('componentDidUpdate admin'+this.state.isAdmin)
-            this.socket.emit('gameBegan', { startTime: Date.now() ,admin:this.state.isAdmin})
+            // console.log('componentDidUpdate admin' + this.state.isAdmin)
+            this.socket.emit('gameBegan', { startTime: Date.now(), admin: this.state.isAdmin })
         }
-        // if (this.props.tags && this.state.tagsRendered === false && this.state.isAdmin) {
-        //     console.log('sendTags')
-        //     let tagObject= {tags: this.props.tags}
-        //     this.socket.emit("sendTags", tagObject)
-        // }
+        if (this.props.tags && !this.state.tagsEmit) {
+            // console.log(this.props.tags)
+            let tagObject = { tags: this.props.tags }
+            let url = this.props.imageURL
+            this.socket.emit("sendTags", tagObject)
+            this.socket.emit("sendURL", url)
+        }
     }
 
     timerFunction = () => {
         let secondsForCountdown = Math.round((this.state.startTimer + 60000 - Date.now()) / 1000);
 
-        console.log(secondsForCountdown)
+        // console.log(secondsForCountdown)
         const interval = setInterval(() => {
             secondsForCountdown = secondsForCountdown - 1;
             // console.log(secondsForCountdown,this.state.startTimer)
             if (secondsForCountdown <= 0) {
                 // console.log('conditionWorking')
-                console.log("Kill timer")
+                // console.log("Kill timer")
                 this.setState({ timerStatus: false })
                 this.props.changeGamePhase(2);
                 clearInterval(interval);
