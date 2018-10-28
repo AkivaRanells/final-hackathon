@@ -18,7 +18,7 @@ mongoose.connect('mongodb://localhost/users', function () {
   console.log("DB connection established!!!");
 })
 
-const vision = require ('./apikey.js')
+const vision = require('./apikey.js')
 
 
 
@@ -51,7 +51,7 @@ app.get('/users/:userName', (req, res, err) => {
   if (err) {
     console.log(err);
   }
-  User.find({"userName":req.params.userName}).exec(function (err, user) {
+  User.find({ "userName": req.params.userName }).exec(function (err, user) {
     if (err) {
       console.log(`couldn't return users: ${err}`);
     }
@@ -78,7 +78,12 @@ app.get('/image', (req, res, err) => {
 //     console.error(err);
 //   }
 // )
-
+app.get('/reset', function (req, res) {
+  userCounter = 0;
+  startTime = null;
+  firstTimer=false;
+  res.send('Reset done')
+})
 app.post('/users', (req, res, err) => {
   if (err) {
     console.log(err);
@@ -99,18 +104,28 @@ app.post('/users', (req, res, err) => {
 server.listen(8080, function () {
   console.log('server running on port 8080')
 });
-let userCounter = 0 ;
-let startTime = Date.now();
+let userCounter = 0;
 io.on('connection', function (socket) {
   userCounter++;
   // console.log(userCounter);
   let timerStatus = true;
-  let timer = {timerStatus:timerStatus, startTime:startTime};
+  let firstTimer = false;
+  let startTime;
+  let timer;
   socket.emit("userCounter", userCounter);
-  socket.emit("timer", timer );
-  socket.on('gameBegan', function(time){
-    startTime=time.startTime
-    io.emit('gameBegan', time);
+  // socket.emit("timer", timer );
+  socket.on('gameBegan', function (time) {
+    if(!firstTimer){
+      startTime = Date.now();
+      firstTimer=true;
+    }
+    timer = { timerStatus: timerStatus, startTime: startTime };
+   // startTime=time.startTime
+   io.emit('gameBegan', timer);
+ })
+ 
+  socket.on('sendTags', function (tagObject) {
+    io.emit("sendTags", tagObject)
   })
   // console.log(socket.id)
   socket.on('chat message', function (msg) {
