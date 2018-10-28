@@ -3,7 +3,7 @@ h1 {
     padding: 25px;
 }
 
-div {
+div#navBar {
     /* background-color: #66b2b2; */
     margin: 20px;
 }

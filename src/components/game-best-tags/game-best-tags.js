@@ -6,6 +6,7 @@ import AdminInstructions from './adminInstructions';
 import PlayerInstructions from './playerInstructions';
 import Timer from './timer';
 import Images from './images';
+import '../../styles/game-best-tags.css';
 
 
 
@@ -16,7 +17,8 @@ class GameBestTags extends Component {
       gameBegan: false,
       inputValue: "",
       gameActive: true,
-      imageTags: ["demo", "tags", "that", "need", "to", "be", "deleted"]
+      imageTags: ["demo", "tags", "that", "need", "to", "be", "deleted"],
+      imageURLs: ['https://thumbs.dreamstime.com/z/cat-dog-party-hat-white-background-17900775.jpg','http://v892w2ylk4g429cyct840kvh-wpengine.netdna-ssl.com/wp-content/uploads/2012/05/AdobeStock_50013661-2.jpeg', 'https://i.ytimg.com/vi/EeIgc-5-JkY/maxresdefault.jpg', 'https://www.petmd.com/sites/default/files/introduce-dog-to-cat.jpg' ]
     }
   }
 
@@ -52,16 +54,15 @@ class GameBestTags extends Component {
   displayTags = () => {
     if (this.state.imageTags !== "" || this.state.imageTags !== null) {
       return this.state.imageTags.slice(0, 15).map(tag =>
-        <span> --{tag}-- </span>
+        <div className="tags"> {tag} <div className="tags"> /</div></div>
       )
     }
   }
 
   displayImages = () => {
     if (this.state.imageTags !== "" || this.state.imageTags !== null) {
-      return this.state.imageTags.slice(0, 15).map(tag =>
-        <span> --Image!-- </span>
-
+      return this.state.imageURLs.slice(0, 15).map(image =>
+        <span><img src={image} className="gameImage"></img> </span>
       )
     }
   }
@@ -128,9 +129,11 @@ class GameBestTags extends Component {
         {adminInstructions}
         {playerInstructions}
         {uploadPic}
-        <div className="tags">{timer}
+        <div className="gameBox">{timer}
         {tags}
+        <div>
         {images}
+        </div>
         {winningImage}
         </div>
         <SocketPage isAdmin={this.props.isAdmin} 
