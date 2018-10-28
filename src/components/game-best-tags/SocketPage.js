@@ -5,12 +5,14 @@ class SocketPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            firstTimeEmit: false,
             firstTime: false,
             isAdmin: false,
             startTimer: 0,
             timerStatus: false,
             message: '',
-            messages: []
+            messages: [],
+            tagsRendered: false
         };
 
         this.socket = io('localhost:8080');
@@ -19,6 +21,13 @@ class SocketPage extends React.Component {
             this.addMessage(msg);
         });
 
+        this.socket.on('sendTags', (tags) => {
+            // console.log(tags.tags)
+            // this.setState({
+            //     tagsRendered: true
+            // })
+            this.props.changeTagsInState(tags.tags)
+        });
 
         this.socket.on("userCounter", (userCounter) => {
             this.isAdmin(userCounter);
@@ -28,41 +37,53 @@ class SocketPage extends React.Component {
         })
 
         this.socket.on("gameBegan", (time) => {
-            // console.log('game has begun');
-            this.setState({ startTimer: time.startTime, timerStatus: true, firstTime: false },
+           if(!this.state.firstTimeEmit){
+            this.setState({ firstTimeEmit: true })
+
+            console.log('game has begun'+time.startTime+"timerStatus"+ time.timerStatus);
+            this.setState({ startTimer: time.startTime, timerStatus: time.timerStatus },
                 function () { this.timerFunction() })
+           }
         })
 
-        this.socket.on('timer', (timer) => {
+        // this.socket.on('timer', (timer) => {
 
-            if (!this.state.isAdmin) {
+        //     if (!this.state.isAdmin) {
 
-                this.setState({ timerStatus: timer.timerStatus, startTimer: timer.startTime, firstTime: false },
-                    function () {
-                        // console.log('timer function called',this.state.timerStatus ,this.state.startTimer, timer.startTime );
-                        this.timerFunction();
-                    });
-            }
-        });
+        //         this.setState({ timerStatus: timer.timerStatus, startTimer: timer.startTime, firstTime: false },
+        //             function () {
+        //                 // console.log('timer function called',this.state.timerStatus ,this.state.startTimer, timer.startTime );
+        //                 this.timerFunction();
+        //             });
+        //     }
+        // });
 
     }
 
     componentDidUpdate = () => {
         // console.log('componentdidupdate');
+        console.log(this.state.isAdmin)
         if (this.state.isAdmin && this.props.gameBegan && this.state.firstTime) {
-            this.socket.emit('gameBegan', { startTime: Date.now() })
+            console.log('componentDidUpdate admin'+this.state.isAdmin)
+            this.socket.emit('gameBegan', { startTime: Date.now() ,admin:this.state.isAdmin})
         }
+        // if (this.props.tags && this.state.tagsRendered === false && this.state.isAdmin) {
+        //     console.log('sendTags')
+        //     let tagObject= {tags: this.props.tags}
+        //     this.socket.emit("sendTags", tagObject)
+        // }
     }
 
     timerFunction = () => {
         let secondsForCountdown = Math.round((this.state.startTimer + 60000 - Date.now()) / 1000);
 
-        // console.log(secondsForCountdown,this.state.startTimer)
+        console.log(secondsForCountdown)
         const interval = setInterval(() => {
             secondsForCountdown = secondsForCountdown - 1;
             // console.log(secondsForCountdown,this.state.startTimer)
             if (secondsForCountdown <= 0) {
                 // console.log('conditionWorking')
+                console.log("Kill timer")
                 this.setState({ timerStatus: false })
                 this.props.changeGamePhase(2);
                 clearInterval(interval);
