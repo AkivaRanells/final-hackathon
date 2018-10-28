@@ -29,12 +29,12 @@ class App extends Component {
         str: str
       }
     })
-      // .then((response) => {
-      //   console.log(response.data.concepts);
-      // })
-      // .catch(function (error) {
-      //   console.log(error)
-      // })
+    // .then((response) => {
+    //   console.log(response.data.concepts);
+    // })
+    // .catch(function (error) {
+    //   console.log(error)
+    // })
   }
 
   checkDatabaseForNameEntered = async (str) => {
@@ -87,7 +87,7 @@ class App extends Component {
     }
   }
 
-  
+
   logOut = () => {
     this.setState({ userFound: false })
   }
@@ -100,43 +100,57 @@ class App extends Component {
     }
   }
 
-  changeGamePhase=(num)=>{
-    this.setState({gamePhase:num})
-  }  
+  changeGamePhase = (num) => {
+    this.setState({ gamePhase: num })
+  }
+
+  logOut = () => {
+    console.log('homepage')
+    this.props.logOut()
+  }
+
   render() {
     let to = this.state.userFound ? "/homepage" : "/login";
     return (
       <Router>
         <div className="App">
-          <Route path="/" exact
-            render={() =>
-              <Redirect to={to} />} />
-          {/* <Route path="/" exact
+          <div className="header">
+            <div className="headerLeft"></div>
+            <div className="headerMid">
+              <NavBar logOut={this.logOut} />
+
+              <Route path="/" exact
+                render={() =>
+                  <Redirect to={to} />} />
+              {/* <Route path="/" exact
             render={() =>
               <Redirect to="/login" />}
           /> */}
-          {/* <Route path="/" exact
+              {/* <Route path="/" exact
             render={() =>
               ((this.state.userFound) ? (
                 <Redirect to="/homepage" />
-              ) :
+                ) :
                 <Redirect to="/login" />
-              )
-            }
-          /> */}
-          <Route path="/login" exact
-            render={() =>
-              <Login
-                showError={this.state.showError}
-                checkDatabaseForNameEntered={this.checkDatabaseForNameEntered}
-                addEnteredNameIntoDatabase={this.addEnteredNameIntoDatabase}
-                redirectTo={this.state.redirectTo}
-              />}
-          />
-          <Route path="/homepage" exact
-            render={() =>
-              <Homepage logOut={this.logOut} />}
-          />
+                )
+              }
+            /> */}
+              <Route path="/login" exact
+                render={() =>
+                  <Login
+                    showError={this.state.showError}
+                    checkDatabaseForNameEntered={this.checkDatabaseForNameEntered}
+                    addEnteredNameIntoDatabase={this.addEnteredNameIntoDatabase}
+                    redirectTo={this.state.redirectTo}
+                  />}
+              />
+              <Route path="/homepage" exact
+                render={() =>
+                  <Homepage logOut={this.logOut} />}
+              />
+            </div>
+            <div className="headerRight"></div>
+          </div>
           <Route path="/game" exact
             render={() =>
               <GameBestTags

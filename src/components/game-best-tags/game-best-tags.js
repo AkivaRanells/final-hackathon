@@ -128,10 +128,11 @@ class GameBestTags extends Component {
         {adminInstructions}
         {playerInstructions}
         {uploadPic}
-        {timer}
+        <div className="tags">{timer}
         {tags}
         {images}
         {winningImage}
+        </div>
         <SocketPage isAdmin={this.props.isAdmin} 
         changeGamePhase={this.props.changeGamePhase}
         gameBegan={this.state.gameBegan}
