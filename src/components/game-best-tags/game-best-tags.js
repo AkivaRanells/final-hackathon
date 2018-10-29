@@ -19,7 +19,6 @@ class GameBestTags extends Component {
       gameActive: true,
       imageTags: null,
       imageURLs: [],
-      imageURL: "",
       haveSentURL: false
     }
   }
@@ -36,16 +35,10 @@ class GameBestTags extends Component {
     this.setState({ gameBegan: true, startTime: Date.now() })
   }
 
-  changeURLInState=()=>{
-    let url =this.state.inputValue;
-    this.setState({imageURL: url}, function(){console.log(this.state.imageURL)})
-  }
   getImageTags = () => {
     if (this.state.inputValue !== "") {
-      this.changeURLInState();
       // this.changeImageURLSInState(this.state.inputValue)
       if (this.props.isAdminState) {
-        console.log("is admin")
         this.props.getImageTags(this.state.inputValue)
           .then((response) => {
             let tags = response.data.concepts.map(tag => tag.name)
@@ -181,7 +174,7 @@ class GameBestTags extends Component {
           tags={this.state.imageTags}
           changeTagsInState={this.changeTagsInState}
           changeImageURLSInState={this.changeImageURLSInState}
-          imageURL={this.state.imageURL}
+          imageURL={this.state.inputValue}
           urlArray={this.state.imageURLs}
         />
       </div>
