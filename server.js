@@ -9,18 +9,18 @@ const server = require('http').createServer(app);
 const Clarifai = require('clarifai');
 const io = socket(server);
 const port = process.env.PORT || '8080';
-let path = require ('path');
+let path = require('path');
 // var server = require('http').createServer(app);
 //urgent todo change port 8080 to heroku port
 
 if (app.get('env') === 'development') {
-	require('dotenv').load();
-	const cors = require('cors');
-	app.use(cors());
+  // require('dotenv').load();
+  const cors = require('cors');
+  app.use(cors());
 }
 
 
-mongoose.connect(process.env.CONNECTION_STRING ||'mongodb://localhost/users', function () {
+mongoose.connect(process.env.CONNECTION_STRING || 'mongodb://localhost/users', function () {
   console.log("DB connection established!!!");
 })
 
@@ -30,7 +30,6 @@ const vision = new Clarifai.App({
 });
 
 
-app.use(express.static('public'));
 app.use(express.static('node_modules'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -111,10 +110,14 @@ app.post('/users', (req, res, err) => {
 });
 
 if (process.env.NODE_ENV === 'production') {
-	app.use(express.static(path.join(__dirname, 'build')));
-	app.get('*', function (req, res) {
-		res.sendFile(path.join(__dirname, 'build', 'index.html'));
-	});
+  app.use(express.static(path.join(__dirname, 'build')));
+  app.get('*', function (req, res) {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+  });
+}
+else {
+
+  app.use(express.static('public'));
 }
 
 let tagsSent = false;
@@ -151,7 +154,7 @@ io.on('connection', function (socket) {
   })
   socket.on("sendURL", function (url) {
     console.log("url" + url)
-    let objectToPush = {url:url, votes:0}
+    let objectToPush = { url: url, votes: 0 }
     urlArray.push(objectToPush)
     console.log(urlArray)
     io.emit("sendURL", urlArray)
