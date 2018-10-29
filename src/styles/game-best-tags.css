@@ -1,0 +1,21 @@
+.gameImage {
+    max-width:300px;
+    margin: 4px;
+    /* position: relative; */
+    display: inline;
+}
+
+.tags{
+    /* padding: 6px; */
+    display: inline;
+    text-align: left;
+}
+
+.gameBox {
+    background-image: url('https://img1.picmix.com/output/stamp/normal/6/8/4/4/264486_cc7d0.png');
+    /* background-size: 100%; */
+    background-size: contain;
+    background-repeat: no-repeat;
+    /* border: 3px ridge teal; */
+    padding: 8px;
+}

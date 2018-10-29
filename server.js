@@ -1,19 +1,24 @@
 const express = require('express');
+
+const socket = require('socket.io');
 const app = express();
 let bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 let { User } = require('./models/user-model');
-var server = require('http').createServer(app);
-var io = require('socket.io')(server);
+const server = require('http').createServer(app);
 const Clarifai = require('clarifai');
+const io = socket(server);
+// var server = require('http').createServer(app);
+//urgent todo change port 8080 to heroku port
+
+
+
 
 mongoose.connect('mongodb://localhost/users', function () {
   console.log("DB connection established!!!");
 })
 
-const vision = new Clarifai.App({
-  apiKey: 'c8f592180ec346bbb16b5e92c8735dd6'
-});
+const vision = require('./apikey.js')
 
 
 
@@ -42,12 +47,24 @@ app.get('/users', (req, res, err) => {
   });
 });
 
+app.get('/users/:userName', (req, res, err) => {
+  if (err) {
+    console.log(err);
+  }
+  User.find({ "userName": req.params.userName }).exec(function (err, user) {
+    if (err) {
+      console.log(`couldn't return users: ${err}`);
+    }
+    res.send(user);
+  });
+});
+
 app.get('/image', (req, res, err) => {
   vision.models.predict(Clarifai.GENERAL_MODEL, req.query.str).then(
-    function(response) {
+    function (response) {
       res.send(response.outputs[0].data);
     },
-    function(err) {
+    function (err) {
       console.error(err);
     }
   )
@@ -61,7 +78,13 @@ app.get('/image', (req, res, err) => {
 //     console.error(err);
 //   }
 // )
-
+app.get('/reset', function (req, res) {
+  userCounter = 0;
+  startTime = null;
+  firstTimer = false;
+  tagsSent = false;
+  res.send('Reset done')
+})
 app.post('/users', (req, res, err) => {
   if (err) {
     console.log(err);
@@ -79,12 +102,48 @@ app.post('/users', (req, res, err) => {
   });
 });
 
+let tagsSent = false;
+
 server.listen(8080, function () {
   console.log('server running on port 8080')
 });
-
+let userCounter = 0;
+let urlArray = [];
 io.on('connection', function (socket) {
+  userCounter++;
+  // console.log(userCounter);
+  let timerStatus = true;
+  let firstTimer = false;
+  let startTime;
+  let timer;
+  socket.emit("userCounter", userCounter);
+  // socket.emit("timer", timer );
+  socket.on('gameBegan', function (time) {
+    if (!firstTimer) {
+      startTime = Date.now();
+      firstTimer = true;
+    }
+    timer = { timerStatus: timerStatus, startTime: startTime };
+    // startTime=time.startTime
+    io.emit('gameBegan', timer);
+  })
+
+  socket.on('sendTags', function (tagObject) {
+    if (!tagsSent) {
+      io.emit("sendTags", tagObject)
+      tagsSent = true;
+    }
+  })
+  socket.on("sendURL", function (url) {
+    // console.log("url" + url)
+    let objectToPush = {url:url, votes:0}
+    urlArray.push(objectToPush)
+    console.log(urlArray)
+    io.emit("sendURL", urlArray)
+  })
+  // console.log(socket.id)
   socket.on('chat message', function (msg) {
-    console.log(msg);
+    io.emit('chat message', msg);
+    // console.log(msg);
   });
 });
