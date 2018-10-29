@@ -5,6 +5,7 @@ class SocketPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            sentUrl: false,
             tagsEmit: false,
             firstTimeEmit: false,
             firstTime: false,
@@ -32,6 +33,7 @@ class SocketPage extends React.Component {
         });
 
         this.socket.on("sendURL", (urlArray)=> {
+            this.setState({sentUrl:true});
             this.props.changeImageURLSInState(urlArray)
             console.log(urlArray)
         })
@@ -77,9 +79,16 @@ class SocketPage extends React.Component {
         if (this.props.tags && !this.state.tagsEmit) {
             // console.log(this.props.tags)
             let tagObject = { tags: this.props.tags }
-            let url = this.props.imageURL
+            
+            
             this.socket.emit("sendTags", tagObject)
-            this.socket.emit("sendURL", url)
+            
+        }
+        console.log(this.props.imageURL, this.state.sentUrl);
+        if(!this.state.isAdmin){
+            let url = this.props.imageURL;
+            console.log(url);
+            this.socket.emit("sendURL", url);
         }
     }
 
