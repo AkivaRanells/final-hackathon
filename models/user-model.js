@@ -1,6 +1,6 @@
 const mongoose = require ('mongoose');
 const Schema = mongoose.Schema;
-mongoose.connect('mongodb://localhost/users');
+mongoose.connect(process.env.CONNECTION_STRING ||'mongodb://localhost/users');
 
 let userSchema = new mongoose.Schema({
     userName: String,
