@@ -105,7 +105,7 @@ app.post('/users', (req, res, err) => {
 
 let tagsSent = false;
 
-server.listen(8080, function () {
+server.listen(port, function () {
   console.log('server running on port 8080')
 });
 let userCounter = 0;
