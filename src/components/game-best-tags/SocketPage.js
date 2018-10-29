@@ -16,7 +16,7 @@ class SocketPage extends React.Component {
             messages: [],
         };
 
-        this.socket = io('localhost:8080');
+        this.socket = io('https://best-tags.herokuapp.com/game');
 
         this.socket.on('chat message', (msg) => {
             this.addMessage(msg);
@@ -103,7 +103,7 @@ class SocketPage extends React.Component {
     }
 
     timerFunction = () => {
-        let secondsForCountdown = Math.round((this.state.startTimer + 10000 - Date.now()) / 1000);
+        let secondsForCountdown = Math.round((this.state.startTimer + 60000 - Date.now()) / 1000);
 
         // console.log(secondsForCountdown)
         const interval = setInterval(() => {

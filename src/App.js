@@ -24,7 +24,7 @@ class App extends Component {
   }
 
   getImageTags(str) {
-    return Axios.get('http://localhost:8080/image', {
+    return Axios.get('/image', {
       params: {
         str: str
       }
@@ -41,7 +41,7 @@ class App extends Component {
     if (str === "") {
       alert("Please enter a name!")
     } else {
-      let data = await Axios.get(`http://localhost:8080/users/${str}`)
+      let data = await Axios.get(`/users/${str}`)
       if (data.data[0]) {
         this.setState({
           currentUser: data.data[0],
@@ -58,7 +58,7 @@ class App extends Component {
   }
 
   addEnteredNameIntoDatabase = async (str) => {
-    let data = await Axios.get(`http://localhost:8080/users/${str}`)
+    let data = await Axios.get(`/users/${str}`)
     if (data.data[0]) {
       console.log(data.data[0])
       this.setState({
@@ -72,7 +72,7 @@ class App extends Component {
         bestTagsTotalScoreHistory: 0,
         tags: []
       }
-      Axios.post('http://localhost:8080/users', newUser)
+      Axios.post('/users', newUser)
         .then((data) => {
           console.log("added")
           this.setState({
