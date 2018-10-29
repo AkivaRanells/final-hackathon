@@ -19,12 +19,12 @@ class GameBestTags extends Component {
       gameActive: true,
       imageTags: null,
       imageURLs: [
-        {url: "https://www.rspcansw.org.au/wp-content/uploads/2017/08/50_a-feature_dogs-and-puppies_mobile.jpg", votes: 0},
-        {url: "https://www.cesarsway.com/sites/newcesarsway/files/styles/large_article_preview/public/Common-dog-behaviors-explained.jpg?itok=FSzwbBoi", votes: 0},
-        {url: "https://images.theconversation.com/files/205966/original/file-20180212-58348-7huv6f.jpeg?ixlib=rb-1.1.0&q=45&auto=format&w=926&fit=clip", votes: 0},
-        {url: "https://i2-prod.mirror.co.uk/incoming/article9769854.ece/ALTERNATES/s615/PROD-Mixed-breed-lab-cross-8-week-old-puppy-in-farm-yard-near-Cochrane-AlbertajpgED.jpg", votes: 0},
-        {url: "https://img.purch.com/w/660/aHR0cDovL3d3dy5saXZlc2NpZW5jZS5jb20vaW1hZ2VzL2kvMDAwLzA5Ny84OTEvb3JpZ2luYWwvd2h5LWRvZ3MtZWF0LXBvb3A=", votes: 0},
-        {url: "https://www.mensjournal.com/wp-content/uploads/gettyimages-583596559-e274095b-2e49-481a-b1d1-de6bfee9e588.jpg", votes: 0}
+        { url: "https://www.rspcansw.org.au/wp-content/uploads/2017/08/50_a-feature_dogs-and-puppies_mobile.jpg", votes: 0 },
+        { url: "https://www.cesarsway.com/sites/newcesarsway/files/styles/large_article_preview/public/Common-dog-behaviors-explained.jpg?itok=FSzwbBoi", votes: 0 },
+        { url: "https://images.theconversation.com/files/205966/original/file-20180212-58348-7huv6f.jpeg?ixlib=rb-1.1.0&q=45&auto=format&w=926&fit=clip", votes: 0 },
+        { url: "https://i2-prod.mirror.co.uk/incoming/article9769854.ece/ALTERNATES/s615/PROD-Mixed-breed-lab-cross-8-week-old-puppy-in-farm-yard-near-Cochrane-AlbertajpgED.jpg", votes: 0 },
+        { url: "https://img.purch.com/w/660/aHR0cDovL3d3dy5saXZlc2NpZW5jZS5jb20vaW1hZ2VzL2kvMDAwLzA5Ny84OTEvb3JpZ2luYWwvd2h5LWRvZ3MtZWF0LXBvb3A=", votes: 0 },
+        { url: "https://www.mensjournal.com/wp-content/uploads/gettyimages-583596559-e274095b-2e49-481a-b1d1-de6bfee9e588.jpg", votes: 0 }
       ],
       haveSentURL: false,
       numberOfVotes: 0
@@ -69,8 +69,7 @@ class GameBestTags extends Component {
       return this.state.imageTags.map(tag => {
         return (
           <div className="tags">
-            --{tag}-- <div className="tags">
-            </div>
+             / {tag} /
           </div>)
       }
       )
@@ -78,19 +77,19 @@ class GameBestTags extends Component {
     // .slice(0, 15)
   }
 
-addVote = (url) => {
-  let newState = {...this.state}
-  let votedImage = newState.imageURLs.find(image => {
-    if (image.url === url) {
-      image.votes = image.votes + 1
-    } 
-  });
-  newState.numberOfVotes = newState.numberOfVotes + 1;
-  this.setState(newState)
-  if (this.state.numberOfVotes === 4) {
-    this.props.changeGamePhase(3)
+  addVote = (url) => {
+    let newState = { ...this.state }
+    let votedImage = newState.imageURLs.find(image => {
+      if (image.url === url) {
+        image.votes = image.votes + 1
+      }
+    });
+    newState.numberOfVotes = newState.numberOfVotes + 1;
+    this.setState(newState)
+    if (this.state.numberOfVotes === 4) {
+      this.props.changeGamePhase(3)
+    }
   }
-}
 
   displayImages = () => {
     if (this.state.imageTags) {
@@ -114,7 +113,7 @@ addVote = (url) => {
       }
     }
     return <div>
-    <h1>Here's the winning image:</h1>
+      <h1>Here's the winning image:</h1>
       <img src={winningImage.imageURL}></img>
     </div>
   }
@@ -136,12 +135,12 @@ addVote = (url) => {
   }
 
   changeImageURLSInState = (urlArray) => {
-    if(!this.state.haveSentURL) {
-    this.setState({imageURLs:urlArray, haveSentURL:true}, function(){
-      console.log(this.state.imageURLs)
+    if (!this.state.haveSentURL) {
+      this.setState({ imageURLs: urlArray, haveSentURL: true }, function () {
+        console.log(this.state.imageURLs)
+      }
+      )
     }
-    )
-  }
   }
 
 
@@ -195,14 +194,16 @@ addVote = (url) => {
         {adminInstructions}
         {playerInstructions}
         {uploadPic}
-        <div className="gameBox">{timer}
+        <div className="gameBox">
           {tags}
-          <div>
-            {images}
-          </div>
+          {timer}
+          <div></div>
+          {images}
           {winningImage}
-
         </div>
+        <div >
+        </div>
+
         <SocketPage isAdmin={this.props.isAdmin}
           changeGamePhase={this.props.changeGamePhase}
           gameBegan={this.state.gameBegan}
@@ -212,7 +213,7 @@ addVote = (url) => {
           imageURL={this.state.inputValue}
           urlArray={this.state.imageURLs}
         />
-      </div>
+      </div >
     )
   }
 
