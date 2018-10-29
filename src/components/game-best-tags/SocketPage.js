@@ -5,7 +5,7 @@ class SocketPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            sentUrl: false,
+            sentUrl: true,
             tagsEmit: false,
             firstTimeEmit: false,
             firstTime: false,
@@ -33,7 +33,7 @@ class SocketPage extends React.Component {
         });
 
         this.socket.on("sendURL", (urlArray)=> {
-            this.setState({sentUrl:true});
+            this.setState({sentUrl:false});
             this.props.changeImageURLSInState(urlArray)
             console.log(urlArray)
         })
@@ -84,12 +84,22 @@ class SocketPage extends React.Component {
             this.socket.emit("sendTags", tagObject)
             
         }
-        console.log(this.props.imageURL, this.state.sentUrl);
-        if(!this.state.isAdmin){
+        // console.log(this.props.imageURL, this.state.sentUrl, this.state.isAdmin);
+        console.log('componentDidUpdate' + JSON.stringify(this.props))
+        console.log('--------')
+        console.log(!this.state.isAdmin + '  -  '+  this.state.sentUrl)
+
+        //This needs some condition to occur only once.
+        if(!this.state.isAdmin && this.state.sentUrl && this.props.imageURL.length>0){
             let url = this.props.imageURL;
-            console.log(url);
+            console.log(this.props);
             this.socket.emit("sendURL", url);
         }
+        // if(!this.state.isAdmin){
+        //     let url = this.props.imageURL;
+        //     console.log(url);
+        //     this.socket.emit("sendURL", url);
+        // }
     }
 
     timerFunction = () => {

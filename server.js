@@ -135,8 +135,10 @@ io.on('connection', function (socket) {
     }
   })
   socket.on("sendURL", function (url) {
+    // console.log("url" + url)
     let objectToPush = {url:url, votes:0}
     urlArray.push(objectToPush)
+    console.log(urlArray)
     io.emit("sendURL", urlArray)
   })
   // console.log(socket.id)
