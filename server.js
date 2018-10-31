@@ -40,11 +40,6 @@ app.use(bodyParser.json());
 
 //   next()
 // })
-
-app.get('/users', (req, res, err) => {
-  let users;
-  if (err) {
-    console.log(err);
   }
   User.find().exec(function (err, users) {
     if (err) {

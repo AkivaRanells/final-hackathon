@@ -10,6 +10,7 @@ import Login from './components/login';
 import Axios from 'axios';
 
 
+
 class App extends Component {
   constructor() {
     super();
@@ -112,57 +113,58 @@ class App extends Component {
   render() {
     let to = this.state.userFound ? "/homepage" : "/login";
     return (
-      <Router>
-        <div className="App">
-          <div className="header">
-            <div className="headerLeft"></div>
-            <div className="headerMid">
-              <NavBar logOut={this.logOut} />
+      <div className="App">{this.props.store.objOne}</div>
+      // <Router>
+      //   <div className="App">
+      //     <div className="header">
+      //       <div className="headerLeft"></div>
+      //       <div className="headerMid">
+      //         <NavBar logOut={this.logOut} />
 
-              <Route path="/" exact
-                render={() =>
-                  <Redirect to={to} />} />
-              {/* <Route path="/" exact
-            render={() =>
-              <Redirect to="/login" />}
-          /> */}
-              {/* <Route path="/" exact
-            render={() =>
-              ((this.state.userFound) ? (
-                <Redirect to="/homepage" />
-                ) :
-                <Redirect to="/login" />
-                )
-              }
-            /> */}
-              <Route path="/login" exact
-                render={() =>
-                  <Login
-                    showError={this.state.showError}
-                    checkDatabaseForNameEntered={this.checkDatabaseForNameEntered}
-                    addEnteredNameIntoDatabase={this.addEnteredNameIntoDatabase}
-                    redirectTo={this.state.redirectTo}
-                  />}
-              />
-              <Route path="/homepage" exact
-                render={() =>
-                  <Homepage logOut={this.logOut} />}
-              />
-            </div>
-            <div className="headerRight"></div>
-          </div>
-          <Route path="/game" exact
-            render={() =>
-              <GameBestTags
-                getImageTags={this.getImageTags}
-                isAdmin={this.isAdmin}
-                gamePhase={this.state.gamePhase}
-                isAdminState={this.state.isAdmin}
-                changeGamePhase={this.changeGamePhase}
-              />}
-          />
-        </div>
-      </Router>
+      //         <Route path="/" exact
+      //           render={() =>
+      //             <Redirect to={to} />} />
+      //         {/* <Route path="/" exact
+      //       render={() =>
+      //         <Redirect to="/login" />}
+      //     /> */}
+      //         {/* <Route path="/" exact
+      //       render={() =>
+      //         ((this.state.userFound) ? (
+      //           <Redirect to="/homepage" />
+      //           ) :
+      //           <Redirect to="/login" />
+      //           )
+      //         }
+      //       /> */}
+      //         <Route path="/login" exact
+      //           render={() =>
+      //             <Login
+      //               showError={this.state.showError}
+      //               checkDatabaseForNameEntered={this.checkDatabaseForNameEntered}
+      //               addEnteredNameIntoDatabase={this.addEnteredNameIntoDatabase}
+      //               redirectTo={this.state.redirectTo}
+      //             />}
+      //         />
+      //         <Route path="/homepage" exact
+      //           render={() =>
+      //             <Homepage logOut={this.logOut} />}
+      //         />
+      //       </div>
+      //       <div className="headerRight"></div>
+      //     </div>
+      //     <Route path="/game" exact
+      //       render={() =>
+      //         <GameBestTags
+      //           getImageTags={this.getImageTags}
+      //           isAdmin={this.isAdmin}
+      //           gamePhase={this.state.gamePhase}
+      //           isAdminState={this.state.isAdmin}
+      //           changeGamePhase={this.changeGamePhase}
+      //         />}
+      //     />
+      //   </div>
+      // </Router>
     );
   }
 }
