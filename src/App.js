@@ -113,6 +113,8 @@ class App extends Component {
     let to = this.state.userFound ? "/homepage" : "/login";
     return (
       <Router>
+        <div>{this.props.store.user}</div>
+
         <div className="App">
           <div className="header">
             <div className="headerLeft"></div>
