@@ -103,7 +103,7 @@ class SocketPage extends React.Component {
     }
 
     timerFunction = () => {
-        let secondsForCountdown = Math.round((this.state.startTimer + 10000 - Date.now()) / 1000);
+        let secondsForCountdown = Math.round((this.state.startTimer + 45000 - Date.now()) / 1000);
 
         // console.log(secondsForCountdown)
         const interval = setInterval(() => {

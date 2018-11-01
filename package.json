@@ -43,6 +43,7 @@
     "match-sorter": "^2.3.0",
     "mini-css-extract-plugin": "0.4.3",
     "mobx": "^5.5.1",
+    "mobx-react": "^5.3.6",
     "mongo": "^0.1.0",
     "mongoose": "^5.3.5",
     "optimize-css-assets-webpack-plugin": "5.0.1",

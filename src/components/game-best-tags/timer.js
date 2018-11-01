@@ -5,7 +5,7 @@ class Timer extends Component {
   render() {
     return (
       <div>
-timer!       
+{/* timer!        */}
       </div>
     )
   }
