@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Link, Redirect} from "react-router-dom";
-
+import store from '../store/store'
 class Login extends Component {
 
   constructor() {
@@ -34,6 +34,7 @@ class Login extends Component {
     } 
     return (
       <div>
+        {this.props.store.user}
         <input type="text" value={this.state.name} onChange={this.changeNameInLocalState}/>
         <Link to="/"><button onClick={this.checkDatabaseForNameEntered}>Login</button></Link>
         <Link to="/"><button onClick={this.addEnteredNameIntoDatabase}>Register</button></Link>
