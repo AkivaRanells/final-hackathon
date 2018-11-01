@@ -27,7 +27,7 @@ class UserStore {
     @observable haveSentURL = false;
     @observable numberOfVotes = 0;
 
-    @action getImageTags(str) {
+    @action getImageTagsJSONRequest(str) {
         return axios.get('http://localhost:8080/image', {
             params: {
                 str: str
@@ -79,7 +79,7 @@ class UserStore {
         this.userFound = false
     }
 
-    @action isAdmin = (value) => {
+    @action isAdminFunction = (value) => {
         if (value === 1) {
             this.isAdmin = true;
         }
@@ -92,6 +92,51 @@ class UserStore {
     @action startTimerInSocket = () => {
         this.gameBegan = true;
     }
+
+    @action getImageTags = () => {
+        if (this.inputValue !== "") {
+            if (this.isAdmin) {
+                this.getImageTagsJSONRequest(this.inputValue)
+                    .then((response) => {
+                        let tags = response.data.concepts.map(tag => tag.name)
+                        this.imageTags = tags
+                        this.startTimerInSocket();
+                        this.changeGamePhase(1);
+                    })
+                    .catch(function (error) {
+                        console.log(error)
+                    })
+            }
+        }
+    }
+
+    @action addVote = (url) => {
+        this.imageURLs.find(image => {
+            if (image.url === url) {
+                image.votes = image.votes + 1
+            }
+        });
+        this.numberOfVotes = this.numberOfVotes + 1;
+        if (this.numberOfVotes === 4) {
+            this.changeGamePhase(3)
+        }
+    }
+
+    @action changeInputValue = (event) => {
+        this.inputValue = event.target.value;
+    }
+
+    @action changeTagsInState = (tags) => {
+        this.imageTags = tags;
+    }
+
+    @action changeImageURLSInState = (urlArray) => {
+        if (!this.haveSentURL) {
+            this.imageURLs = urlArray;
+            this.haveSentURL = true;
+        }
+    }
+
 
 }
 
