@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import {Link, Redirect} from "react-router-dom";
-
+import { action, observable } from 'mobx';
+import { observer, inject } from 'mobx-react';
+@inject('store')
+@observer
 class Login extends Component {
-
+  @observable name = ''
   constructor() {
     super();
     this.state = {
@@ -10,34 +13,32 @@ class Login extends Component {
     }
   }
 
-  changeNameInLocalState = (event) => {
-    let newState = {...this.state};
-    newState.name = event.target.value;
-    this.setState(newState);
+  @action changeNameInLocalState = (event) => {
+      this.name = event.target.value;
   }
 
   checkDatabaseForNameEntered = () => {
-    this.props.checkDatabaseForNameEntered(this.state.name);
+    this.props.store.checkDatabaseForNameEntered(this.name);
   }
 
   addEnteredNameIntoDatabase = () => {
-    if (this.state.name !=="") {
-    this.props.addEnteredNameIntoDatabase(this.state.name);
+    if (this.name !=="") {
+    this.props.store.addEnteredNameIntoDatabase(this.name);
     } else {
       alert("you can't register without a username!");  
     }
   }
 
   render() {
-    if(this.props.redirectTo) {
-      return <Redirect to={this.props.redirectTo} />
+    if(this.props.store.redirectTo) {
+      return <Redirect to={this.props.store.redirectTo} />
     } 
     return (
       <div>
-        <input type="text" value={this.state.name} onChange={this.changeNameInLocalState}/>
+        <input type="text" value={this.name} onChange={this.changeNameInLocalState}/>
         <Link to="/"><button onClick={this.checkDatabaseForNameEntered}>Login</button></Link>
         <Link to="/"><button onClick={this.addEnteredNameIntoDatabase}>Register</button></Link>
-        { this.props.showError
+        { this.props.store.showError
         ? <p>USER NOT FOUND!</p>
         : <p></p>
       } 
