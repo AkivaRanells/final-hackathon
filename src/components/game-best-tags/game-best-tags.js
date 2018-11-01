@@ -7,43 +7,41 @@ import PlayerInstructions from './playerInstructions';
 import Timer from './timer';
 import Images from './images';
 import '../../styles/game-best-tags.css';
+import { observer, inject } from 'mobx-react';
 
-
-
+@inject("store")
+@observer
 class GameBestTags extends Component {
-  constructor() {
-    super();
-    this.state = {
-      gameBegan: false,
-      inputValue: "",
-      gameActive: true,
-      imageTags: null,
-      imageURLs: [
-        { url: "https://www.rspcansw.org.au/wp-content/uploads/2017/08/50_a-feature_dogs-and-puppies_mobile.jpg", votes: 0 },
-        { url: "https://www.cesarsway.com/sites/newcesarsway/files/styles/large_article_preview/public/Common-dog-behaviors-explained.jpg?itok=FSzwbBoi", votes: 0 },
-        { url: "https://images.theconversation.com/files/205966/original/file-20180212-58348-7huv6f.jpeg?ixlib=rb-1.1.0&q=45&auto=format&w=926&fit=clip", votes: 0 },
-        { url: "https://i2-prod.mirror.co.uk/incoming/article9769854.ece/ALTERNATES/s615/PROD-Mixed-breed-lab-cross-8-week-old-puppy-in-farm-yard-near-Cochrane-AlbertajpgED.jpg", votes: 0 },
-        { url: "https://img.purch.com/w/660/aHR0cDovL3d3dy5saXZlc2NpZW5jZS5jb20vaW1hZ2VzL2kvMDAwLzA5Ny84OTEvb3JpZ2luYWwvd2h5LWRvZ3MtZWF0LXBvb3A=", votes: 0 },
-        { url: "https://www.mensjournal.com/wp-content/uploads/gettyimages-583596559-e274095b-2e49-481a-b1d1-de6bfee9e588.jpg", votes: 0 }
-      ],
-      haveSentURL: false,
-      numberOfVotes: 0
-    }
-  }
+  // constructor() {
+  //   super();
+  //   this.state = {
+  //     gameBegan: false,
+  //     inputValue: "",
+  //     gameActive: true,
+  //     imageTags: null,
+  //     imageURLs: [
+  //       { url: "https://www.rspcansw.org.au/wp-content/uploads/2017/08/50_a-feature_dogs-and-puppies_mobile.jpg", votes: 0 },
+  //       { url: "https://www.cesarsway.com/sites/newcesarsway/files/styles/large_article_preview/public/Common-dog-behaviors-explained.jpg?itok=FSzwbBoi", votes: 0 },
+  //       { url: "https://images.theconversation.com/files/205966/original/file-20180212-58348-7huv6f.jpeg?ixlib=rb-1.1.0&q=45&auto=format&w=926&fit=clip", votes: 0 },
+  //       { url: "https://i2-prod.mirror.co.uk/incoming/article9769854.ece/ALTERNATES/s615/PROD-Mixed-breed-lab-cross-8-week-old-puppy-in-farm-yard-near-Cochrane-AlbertajpgED.jpg", votes: 0 },
+  //       { url: "https://img.purch.com/w/660/aHR0cDovL3d3dy5saXZlc2NpZW5jZS5jb20vaW1hZ2VzL2kvMDAwLzA5Ny84OTEvb3JpZ2luYWwvd2h5LWRvZ3MtZWF0LXBvb3A=", votes: 0 },
+  //       { url: "https://www.mensjournal.com/wp-content/uploads/gettyimages-583596559-e274095b-2e49-481a-b1d1-de6bfee9e588.jpg", votes: 0 }
+  //     ],
+  //     haveSentURL: false,
+  //     numberOfVotes: 0
+  //   }
+  // }
 
   // ["dog", "canine", "mammal", "pet", "wolf", "cute"]
 
-  checkForActiveGame = () => {
-    if (this.state.gameActive) {
-      // console.log("1")
-    }
-    else {
-      return <UploadPic inputValue={this.state.inputValue} changeInputValue={this.changeInputValueInLocalState} getImageTags={this.getImageTags} />
-    };
-  }
-  startTimerInSocket = () => {
-    this.setState({ gameBegan: true, startTime: Date.now() })
-  }
+  // checkForActiveGame = () => {
+  //   if (!this.state.gameActive) {
+  //     return <UploadPic inputValue={this.state.inputValue} changeInputValue={this.changeInputValueInLocalState} getImageTags={this.getImageTags} />
+  //   };
+  // }
+  // startTimerInSocket = () => {
+  //   this.setState({ gameBegan: true, startTime: Date.now() })
+  // }
 
   getImageTags = () => {
     if (this.state.inputValue !== "") {
