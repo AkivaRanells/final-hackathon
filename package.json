@@ -44,7 +44,7 @@
     "mini-css-extract-plugin": "0.4.3",
     "mobx": "^5.5.1",
     "mongo": "^0.1.0",
-    "mongoose": "^5.3.5",
+    "mongoose": "^5.7.5",
     "optimize-css-assets-webpack-plugin": "5.0.1",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
